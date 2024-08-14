@@ -1,0 +1,11 @@
+#layout{
+    background-color: aqua;
+  position: relative;
+}
+
+.main-container{
+    width: 90% ;
+
+    position: absolute;
+    right: 0;
+}

@@ -1,0 +1,258 @@
+.container {
+  padding: 27px;
+  margin-bottom: 30px;
+}
+
+.card {
+  border: 1px solid #ddd;
+  border-radius: 16px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+  margin-bottom: 20px;
+  padding: 20px;
+}
+
+.card-header {
+  display: flex;
+  align-items: center;
+}
+
+.card-header h1 {
+  padding: 10px;
+  font-size: 21px;
+  font-weight: bold;
+  margin-bottom: 20px;
+}
+
+.card-header span {
+  width: 30px;
+  height: 30px;
+  background-color: #030163;
+  color: #ddd;
+  border-radius: 15px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.card-body {
+  padding: 5px;
+  display: grid;
+  gap: 50px;
+  grid-template-columns: auto auto auto;
+}
+
+.form-group {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 5px;
+  font-weight: bold;
+}
+
+.form-group input,
+.form-group select {
+  width: 380px;
+  height: 42px;
+  padding: 8px 20px;
+  border: 0.8px solid #ddd;
+  border-radius: 12px;
+  font-size: 13px;
+}
+
+.btn {
+  display: inline-block;
+  padding: 10px 20px;
+  font-size: 16px;
+  font-weight: bold;
+  color: #fff;
+  background-color: #007bff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  margin-right: 10px;
+}
+
+.btn:hover {
+  background-color: #0056b3;
+}
+
+@media screen and (max-width: 700px) {
+
+  .card-body {
+    padding: 3px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto;
+  }
+
+  .form-group label {
+    margin-bottom: 2px;
+    font-size: 16px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 280px;
+    height: 40px;
+  }
+
+
+  .card {
+    border-radius: 15px;
+    margin-bottom: 16px;
+  }
+}
+
+
+
+
+
+@media screen and (max-width: 767px) and (min-width: 700px) {
+
+  .card-body {
+    padding: 3px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto auto;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 2px;
+    font-size: 16px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 260px;
+    height: 35px;
+  }
+
+
+  .card {
+    border-radius: 15px;
+    margin-bottom: 16px;
+  }
+}
+
+
+
+
+
+@media (max-width: 992px) and (min-width: 767px) {
+
+  .card-body {
+    padding: 3px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto auto;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+ 
+  .form-group input,
+  .form-group select {
+    width: 280px;
+    height: 40px;
+    padding: 8px 20px;
+    border: 0.8px solid #ddd;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 20px;
+  }
+}
+
+
+
+
+
+
+@media (max-width: 1199px) and (min-width: 992px) {
+  .card-body {
+    padding: 3px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto auto;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 280px;
+    height: 40px;
+    padding: 8px 20px;
+    border: 0.8px solid #ddd;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 20px;
+  }
+}
+
+
+
+@media (max-width: 1500px) and (min-width: 1199px) {
+
+  .card-body {
+    padding: 3px;
+    display: grid;
+    gap: 10px;
+    grid-template-columns: auto auto;
+  }
+
+  .form-group label {
+    display: block;
+    margin-bottom: 2px;
+    font-weight: bold;
+    font-size: 16px;
+  }
+
+  .form-group input,
+  .form-group select {
+    width: 280px;
+    height: 40px;
+    padding: 8px 20px;
+    border: 0.8px solid #ddd;
+    border-radius: 12px;
+    font-size: 13px;
+  }
+
+
+  .card {
+    border: 1px solid #ddd;
+    border-radius: 15px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    margin-bottom: 16px;
+    padding: 20px;
+  }
+}
