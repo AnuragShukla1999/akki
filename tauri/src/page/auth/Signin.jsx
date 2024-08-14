@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react'
 import { Link, useNavigate } from 'react-router-dom'
@@ -19,7 +20,7 @@ const Signin = () => {
     const [loading, setLoading] = useState(false);
 
 
-    const handleBlur = () => {
+    const handleBlur = () => { 
         if (userData.email.trim() === '' || userData.password.trim() === '') {
             setUserData({
                 ...userData,
@@ -39,7 +40,7 @@ const Signin = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch('http://192.168.29.93:7000/api/signin', {
+            const response = await fetch('https://akki-1ni7.onrender.com/api/signin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData)
@@ -61,7 +62,7 @@ const Signin = () => {
             }
         } catch (error) {
             console.error('Signin error:', error);
-            toast.error('An error occurred during sign in. Please try again.');
+            toast.error('An error occurred: ${error.message}');
         } finally {
             setLoading(false);
         }
@@ -112,6 +113,9 @@ const Signin = () => {
                         Don't have an account?{' '}
                         <Link to="/signup">
                             Signup
+                        </Link>
+                        <Link to="/dashboard">
+                            Dashboard
                         </Link>
                     </p>
                 </div>

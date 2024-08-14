@@ -16,10 +16,7 @@ dbConnection();
 
 const app = express();
 
-app.use(cors({
-    origin: 'http://localhost:3000',
-    credentials: true
-}));
+app.use(cors());
 
 // app.use(cors({
 //     origin: 'http://localhost:3000', 
@@ -69,6 +66,6 @@ app.use('/api', userRouter);
 app.use('/api', locationRouter);
 
 
-app.listen(process.env.PORT, () => {
+app.listen(process.env.PORT, '0.0.0.0',  () => {
     console.log(`server is connnected at ${process.env.PORT}`);
 })

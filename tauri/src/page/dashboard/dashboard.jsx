@@ -73,7 +73,7 @@ const DashDefault = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('http://192.168.29.93:7000/api/productorderdetails', {
+      const res = await fetch('https://akki-1ni7.onrender.com/api/productorderdetails', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'

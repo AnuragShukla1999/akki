@@ -559,7 +559,7 @@ const BootstrapTable = () => {
   const apiCall = () => {
     const fetchDetails = async () => {
       try {
-        const res = await fetch('http://192.168.29.93:7000/api/getproductdetails');
+        const res = await fetch('https://akki-1ni7.onrender.com/api/getproductdetails');
         if (!res.ok) {
           throw new Error('Network response was not ok');
         }
@@ -634,7 +634,7 @@ const BootstrapTable = () => {
 
   const saveEditProduct = async () => {
     try {
-      const res = await fetch(`http://192.168.29.93:7000/api/updateproductdetails/${product._id}`, {
+      const res = await fetch(`https://akki-1ni7.onrender.com/api/updateproductdetails/${product._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -679,7 +679,7 @@ const BootstrapTable = () => {
 
   const deleteProduct = async () => {
     try {
-      const res = await fetch(`http://192.168.29.93:7000/api/deleteproductdetails/${product._id}`, {
+      const res = await fetch(`https://akki-1ni7.onrender.com/api/deleteproductdetails/${product._id}`, {
         method: 'DELETE',
       });
 
@@ -797,7 +797,7 @@ const BootstrapTable = () => {
       // Delete selected products
       const selectedIds = selectedProducts.map(product => product._id);
       try {
-        const res = await fetch('http://192.168.29.93:7000/api/deleteallproduct', {
+        const res = await fetch('https://akki-1ni7.onrender.com/api/deleteallproduct', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

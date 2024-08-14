@@ -30,7 +30,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const res = await fetch('http://192.168.29.93:7000/api/signup', {
+            const res = await fetch('https://akki-1ni7.onrender.com/api/signup', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

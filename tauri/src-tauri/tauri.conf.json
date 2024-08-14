@@ -3,7 +3,7 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm run dev",
-    "devPath": "http://localhost:3000",
+    "devPath": "http://192.168.29.93:3000",
     "distDir": "../build"
   },
   "package": {
@@ -12,7 +12,12 @@
   },
   "tauri": {
     "allowlist": {
-      "all": false
+      "http": {
+        "all": true
+      },
+      "fs": {
+        "all": true
+      }
     },
     "bundle": {
       "active": true,
@@ -59,7 +64,8 @@
         "height": 600,
         "resizable": true,
         "title": "tauri_app",
-        "width": 800
+        "width": 800,
+        "url" : "http://192.168.29.93:3000"
       }
     ]
   }
