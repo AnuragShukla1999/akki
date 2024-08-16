@@ -6,6 +6,7 @@ export const AuthContext = createContext();
 const AuthContextProvider = ({ children }) => {
     const [user, setUser] = useState(null);
     const [product, setProduct] = useState([]);
+    const [isAuthenticated, setIsAuthenticated] = useState(false);
 
     // const navigate = useNavigate();
 
@@ -16,15 +17,23 @@ const AuthContextProvider = ({ children }) => {
         }
     }, []);
 
+    useEffect(() => {
+        const checkAuth = () => {
+          const token = localStorage.getItem('user');
+          setIsAuthenticated(!!token);
+        };
     
+        checkAuth();
+      }, []);
 
     const logout = () => {
         setUser(null);
+        setIsAuthenticated(false);
         localStorage.removeItem('user');
     };
 
     return (
-        <AuthContext.Provider value={{ user, setUser, logout, product, setProduct }}>{children}</AuthContext.Provider>
+        <AuthContext.Provider value={{ user, setUser, logout, product, setProduct, isAuthenticated, setIsAuthenticated }}>{children}</AuthContext.Provider>
     );
 };
 

@@ -25,24 +25,6 @@ const corsOptions = {
   
   app.use(cors(corsOptions));
 
-
-// Define allowed origins
-// const allowedOrigins = ['https://officeproject-1.onrender.com'];
-
-// // Apply CORS middleware
-// app.use(cors({
-//   origin: function(origin, callback) {
-//     if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//       callback(null, true);
-//     } else {
-//       callback(new Error('Not allowed by CORS'));
-//     }
-//   },
-//   methods: 'GET,HEAD,PUT,PATCH,POST,DELETE',
-//   credentials: true
-// }));
-
-
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', 'true');
     next();

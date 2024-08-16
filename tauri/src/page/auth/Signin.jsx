@@ -12,9 +12,9 @@ import { Link, useNavigate } from 'react-router-dom';
 
 const Signin = () => {
 
-    const { setUser } = useContext(AuthContext);
+    const { setUser, setIsAuthenticated } = useContext(AuthContext);
 
-    const [userData, setUserData] = useState({ 
+    const [userData, setUserData] = useState({
         email: '',
         password: '',
         touched: false
@@ -23,7 +23,7 @@ const Signin = () => {
     const [loading, setLoading] = useState(false);
 
 
-    const handleBlur = () => { 
+    const handleBlur = () => {
         if (userData.email.trim() === '' || userData.password.trim() === '') {
             setUserData({
                 ...userData,
@@ -43,7 +43,7 @@ const Signin = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch('https://akki-1ni7.onrender.com/api/signin', {
+            const response = await fetch('http://192.168.29.93:7000/api/signin', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
@@ -65,10 +65,12 @@ const Signin = () => {
             if (resData.validUser) {
                 setUser(resData.validUser);
                 localStorage.setItem('user', JSON.stringify(resData.validUser));
+                setIsAuthenticated(true);
                 toast.success('Signed in successfully!');
                 console.log('Navigating to /dashboard');
                 setLoading(false);
-                navigate("/dashboard");
+                navigate('/dashboard');
+                console.log("Hello")
             } else {
                 toast.error('Invalid email or password.');
             }
@@ -76,7 +78,7 @@ const Signin = () => {
             console.error('Signin error:', error);
             setLoading(false);
             toast.error(`An error occurred: ${error.message}`);
-        } 
+        }
     };
 
 
