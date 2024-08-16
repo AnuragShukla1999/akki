@@ -39,22 +39,70 @@ const Signin = () => {
         console.log(e.target.value);
     };
 
+    // const handleSubmit = async (e) => {
+    //     e.preventDefault();
+    //     setLoading(true);
+    //     try {
+    //         const response = await fetch('http://192.168.29.93:7000/api/signin', {
+    //             method: 'POST',
+    //             headers: { 'Content-Type': 'application/json' },
+    //             body: JSON.stringify(userData),
+    //             credentials: 'include'
+    //         });
+
+    //         // // Call the Tauri backend command
+    //         // const response = await invoke('signin', {
+    //         //     email: userData.email,
+    //         //     password: userData.password
+    //         // });
+
+    //         if (!response.ok) {
+    //             throw new Error('Network response was not ok');
+    //         }
+
+    //         const resData = await response.json();
+
+    //         if (resData.validUser) {
+    //             setUser(resData.validUser);
+    //             localStorage.setItem('user', JSON.stringify(resData.validUser));
+    //             setIsAuthenticated(true);
+    //             toast.success('Signed in successfully!');
+    //             console.log('Navigating to /dashboard');
+    //             setLoading(false);
+    //             navigate('/dashboard');
+    //             console.log("Hello")
+    //         } else {
+    //             toast.error('Invalid email or password.');
+    //         }
+    //     } catch (error) {
+    //         console.error('Signin error:', error);
+    //         setLoading(false);
+    //         toast.error(`An error occurred: ${error.message}`);
+    //     }
+    // };
+
+
+
     const handleSubmit = async (e) => {
         e.preventDefault();
         setLoading(true);
-        try {
-            const response = await fetch('http://192.168.29.93:7000/api/signin', {
-                method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(userData),
-                credentials: 'include'
-            });
 
-            // // Call the Tauri backend command
-            // const response = await invoke('signin', {
-            //     email: userData.email,
-            //     password: userData.password
-            // });
+        // Define a timeout promise
+        const timeoutPromise = new Promise((_, reject) =>
+            setTimeout(() => reject(new Error('Request timed out')), 60000) // 60000 ms = 60 seconds
+        );
+
+        // Define the fetch promise
+        const fetchPromise = fetch('http://192.168.29.93:7000/api/signin', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify(userData),
+            credentials: 'include'
+        });
+
+        try {
+            // Use Promise.race to handle the first promise that settles
+            const response = await Promise.race([fetchPromise, timeoutPromise]);
 
             if (!response.ok) {
                 throw new Error('Network response was not ok');
@@ -80,6 +128,7 @@ const Signin = () => {
             toast.error(`An error occurred: ${error.message}`);
         }
     };
+
 
 
     return (
