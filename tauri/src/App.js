@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-vars */
 
 import './App.css';
 import { BrowserRouter, Routes, Route, Navigate } from "react-router-dom";
@@ -8,6 +9,8 @@ import BootstrapTable from './page/table/Table';
 
 import { ToastContainer } from 'react-toastify';
 import Layout from './component/Layout';
+
+// const { invoke } = window.__TAURI__.tauri
 
 function App() {
 

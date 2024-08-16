@@ -2,9 +2,10 @@
   "$schema": "../node_modules/@tauri-apps/cli/schema.json",
   "build": {
     "beforeBuildCommand": "npm run build",
-    "beforeDevCommand": "npm run dev",
+    "beforeDevCommand": "npm start",
     "devPath": "http://192.168.29.93:3000",
-    "distDir": "../build"
+    "distDir": "../build",
+    "withGlobalTauri": true
   },
   "package": {
     "productName": "tauri_app",
@@ -53,7 +54,7 @@
       }
     },
     "security": {
-      "csp": "default-src 'self' https://akki-1ni7.onrender.com"
+      "csp": null
     },
     "updater": {
       "active": false

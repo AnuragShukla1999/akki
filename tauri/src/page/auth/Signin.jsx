@@ -1,17 +1,20 @@
 /* eslint-disable no-template-curly-in-string */
 /* eslint-disable no-unused-vars */
 import React, { useContext, useState } from 'react'
-import { Link, useNavigate } from 'react-router-dom'
 import '../../styles/Signin.css'
 import { AuthContext } from '../../context/ConfigContext';
 
 import toast from 'react-hot-toast';
+import { Link, useNavigate } from 'react-router-dom';
+
+// import { invoke } from '@tauri-apps/api/tauri';
+// const { invoke } = window.__TAURI__.tauri;
 
 const Signin = () => {
 
     const { setUser } = useContext(AuthContext);
 
-    const [userData, setUserData] = useState({
+    const [userData, setUserData] = useState({ 
         email: '',
         password: '',
         touched: false
@@ -47,6 +50,12 @@ const Signin = () => {
                 credentials: 'include'
             });
 
+            // // Call the Tauri backend command
+            // const response = await invoke('signin', {
+            //     email: userData.email,
+            //     password: userData.password
+            // });
+
             if (!response.ok) {
                 throw new Error('Network response was not ok');
             }
@@ -57,16 +66,17 @@ const Signin = () => {
                 setUser(resData.validUser);
                 localStorage.setItem('user', JSON.stringify(resData.validUser));
                 toast.success('Signed in successfully!');
+                console.log('Navigating to /dashboard');
+                setLoading(false);
                 navigate("/dashboard");
             } else {
                 toast.error('Invalid email or password.');
             }
         } catch (error) {
             console.error('Signin error:', error);
-            toast.error('An error occurred: ${error.message}');
-        } finally {
             setLoading(false);
-        }
+            toast.error(`An error occurred: ${error.message}`);
+        } 
     };
 
 
@@ -82,10 +92,12 @@ const Signin = () => {
                         <label htmlFor="email">Email</label>
                         <input
                             name="email"
+                            id="email"
                             onBlur={handleBlur}
                             onChange={handleChange}
                             type="email"
                             value={userData.email}
+                            autoComplete="email"
                         />
                         {userData.touched && userData.email.trim() === "" && (
                             <small className="text-danger form-text">Please provide email</small>
@@ -96,10 +108,12 @@ const Signin = () => {
                         <label htmlFor="password">Password</label>
                         <input
                             name="password"
+                            id="password"
                             onBlur={handleBlur}
                             onChange={handleChange}
                             type="password"
                             value={userData.password}
+                            autoComplete="current-password"
                         />
                         {userData.touched && userData.password.trim() === "" && (
                             <small className="text-danger form-text">Please provide password</small>
