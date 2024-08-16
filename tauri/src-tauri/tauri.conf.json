@@ -53,7 +53,7 @@
       }
     },
     "security": {
-      "csp": null
+      "csp": "default-src 'self' https://akki-1ni7.onrender.com"
     },
     "updater": {
       "active": false
