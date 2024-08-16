@@ -16,12 +16,14 @@ dbConnection();
 
 const app = express();
 
-app.use(cors());
-
-// app.use(cors({
-//     origin: 'http://localhost:3000', 
-//     credentials: true, 
-// }));
+const corsOptions = {
+    origin: 'http://192.168.29.93:3000',
+    methods: 'GET,POST,PUT,DELETE',
+    allowedHeaders: 'Content-Type,Authorization',
+    credentials: true
+  };
+  
+  app.use(cors(corsOptions));
 
 
 // Define allowed origins
