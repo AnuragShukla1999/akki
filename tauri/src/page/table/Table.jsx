@@ -640,6 +640,7 @@ const BootstrapTable = () => {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(product),
+        credentials: 'include' 
       });
 
       if (!res.ok) {
@@ -681,6 +682,7 @@ const BootstrapTable = () => {
     try {
       const res = await fetch(`https://akki-1ni7.onrender.com/api/deleteproductdetails/${product._id}`, {
         method: 'DELETE',
+        credentials: 'include' 
       });
 
       if (!res.ok) {
@@ -803,6 +805,7 @@ const BootstrapTable = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ ids: selectedIds }),
+          credentials: 'include' 
         });
 
         if (!res.ok) {
