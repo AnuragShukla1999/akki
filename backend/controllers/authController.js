@@ -1,32 +1,28 @@
+import dbConnection from "../config/db.js";
 import authModel from "../models/authSchema.js";
+
+
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-
 
 export const signup = async (req, res, next) => {
     const { name, email, password } = req.body;
 
-    const user = await authModel.findOne({ email });
-
-    console.log("user", user);
-
-    if (user) {
-        throw new Error("user already exists")
-    };
-
-
-    if (!email || !password) {
-        throw new Error("Please provide email or password")
-    }
-
-
-    const hashedPassword = bcryptjs.hashSync(password, 10);
-
-    const newUser = new authModel({ name, email, password: hashedPassword });
-
-
     try {
-        await newUser.save();
+        const [rows] = await dbConnection.query('SELECT * FROM users WHERE email = ?', [email]);
+
+        if (rows.length > 0) {
+            throw new Error("User already exists");
+        }
+
+        if (!email || !password) {
+            throw new Error("Please provide email and password");
+        }
+
+        const hashedPassword = bcryptjs.hashSync(password, 10);
+
+        await dbConnection.query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
+
         res.status(201).json({
             message: "User created successfully"
         });
@@ -34,6 +30,7 @@ export const signup = async (req, res, next) => {
         next(error);
     }
 };
+
 
 
 
