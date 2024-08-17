@@ -61,6 +61,7 @@ const Signin = () => {
             }
 
             const resData = await response.json();
+            console.log(resData)
 
             if (resData.validUser) {
                 setUser(resData.validUser);
