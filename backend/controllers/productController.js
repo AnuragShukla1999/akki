@@ -102,7 +102,7 @@ export const uploadProductDetails = async (req, res) => {
                 fullName, mobileNo, email, completeAddress, pincode, state, city, landmark, 
                 orderId, orderDate, paymentMode, productName, category, quantity, orderValue, 
                 hsn, physicalWeight, length, breadth, height, courierservices, amount
-            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+            ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
             [
                 fullName, mobileNo, email, completeAddress, pincode, state, city, landmark,
                 orderId, orderDate, paymentMode, productName, category, quantity, orderValue,
@@ -126,8 +126,85 @@ export const uploadProductDetails = async (req, res) => {
 
 
 
+// export const updateProductDetails = async (req, res) => {
+//     const productId = req.params.id;
+
+//     try {
+//         const {
+//             fullName,
+//             mobileNo,
+//             email,
+//             completeAddress,
+//             pincode,
+//             state,
+//             city,
+//             landmark,
+//             orderId,
+//             orderDate,
+//             paymentMode,
+//             productName,
+//             category,
+//             quantity,
+//             orderValue,
+//             hsn,
+//             physicalWeight,
+//             length,
+//             breadth,
+//             height,
+//             courierservices,
+//             amount
+//         } = req.body;
+
+
+//         const updatedProduct = await productModel.findByIdAndUpdate(productId, {
+//             fullName,
+//             mobileNo,
+//             email,
+//             completeAddress,
+//             pincode,
+//             state,
+//             city,
+//             landmark,
+//             orderId,
+//             orderDate,
+//             paymentMode,
+//             productName,
+//             category,
+//             quantity,
+//             orderValue,
+//             hsn,
+//             physicalWeight,
+//             length,
+//             breadth,
+//             height,
+//             courierservices,
+//             amount
+//         }, { new: true });
+
+
+//         if (!updatedProduct) {
+//             return res.status(404).json({ message: "Product not found" });
+//         }
+
+//         res.status(200).json({
+//             message: "Product details updated successfully",
+//             updatedProduct
+//         });
+
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Failed to update product details' });
+//     }
+// };
+
+
+
+
+
+
 export const updateProductDetails = async (req, res) => {
     const productId = req.params.id;
+    console.log('Product ID:', productId);
 
     try {
         const {
@@ -140,7 +217,7 @@ export const updateProductDetails = async (req, res) => {
             city,
             landmark,
             orderId,
-            orderDate,
+            orderDate, // This is in ISO 8601 format
             paymentMode,
             productName,
             category,
@@ -155,40 +232,31 @@ export const updateProductDetails = async (req, res) => {
             amount
         } = req.body;
 
+        // Convert ISO 8601 date string to MySQL DATE format (YYYY-MM-DD)
+        const formattedOrderDate = new Date(orderDate).toISOString().split('T')[0];
 
-        const updatedProduct = await productModel.findByIdAndUpdate(productId, {
-            fullName,
-            mobileNo,
-            email,
-            completeAddress,
-            pincode,
-            state,
-            city,
-            landmark,
-            orderId,
-            orderDate,
-            paymentMode,
-            productName,
-            category,
-            quantity,
-            orderValue,
-            hsn,
-            physicalWeight,
-            length,
-            breadth,
-            height,
-            courierservices,
-            amount
-        }, { new: true });
+        // Execute the update query
+        const [result] = await dbConnection.promise().query(
+            `UPDATE products SET 
+                fullName = ?, mobileNo = ?, email = ?, completeAddress = ?, pincode = ?, state = ?, city = ?, landmark = ?, 
+                orderId = ?, orderDate = ?, paymentMode = ?, productName = ?, category = ?, quantity = ?, orderValue = ?, 
+                hsn = ?, physicalWeight = ?, length = ?, breadth = ?, height = ?, courierservices = ?, amount = ?
+            WHERE id = ?`,
+            [
+                fullName, mobileNo, email, completeAddress, pincode, state, city, landmark,
+                orderId, formattedOrderDate, paymentMode, productName, category, quantity, orderValue,
+                hsn, physicalWeight, length, breadth, height, courierservices, amount,
+                productId
+            ]
+        );
 
-
-        if (!updatedProduct) {
+        if (result.affectedRows === 0) {
             return res.status(404).json({ message: "Product not found" });
         }
 
         res.status(200).json({
             message: "Product details updated successfully",
-            updatedProduct
+            updatedProduct: { id: productId, ...req.body }
         });
 
     } catch (error) {
@@ -201,19 +269,62 @@ export const updateProductDetails = async (req, res) => {
 
 
 
+
+// export const deleteAllProduct = async (req, res) => {
+//     try {
+//         const deleteProduct = await productModel.deleteMany({});
+//         res.status(201).json({
+//             message: "All Product Deleted Successfully",
+//             deleteAllProduct
+//         })
+//     } catch (error) {
+//         res.status(500).json({
+//             message: error.message
+//         })
+//     }
+// }
+
+
+
+
 export const deleteAllProduct = async (req, res) => {
     try {
-        const deleteProduct = await productModel.deleteMany({});
-        res.status(201).json({
-            message: "All Product Deleted Successfully",
-            deleteAllProduct
-        })
+        // Assuming `dbConnection` is your MySQL connection object
+        const [result] = await dbConnection.promise().query('DELETE FROM products');
+
+        res.status(200).json({
+            message: "All products deleted successfully",
+            deletedCount: result.affectedRows
+        });
     } catch (error) {
+        console.error(error);
         res.status(500).json({
             message: error.message
-        })
+        });
     }
-}
+};
+
+
+
+
+
+
+// export const deleteProductDetailsById = async (req, res) => {
+//     const productId = req.params.id;
+
+//     try {
+//         const deleteProductDetailsById = await productModel.findByIdAndDelete(productId);
+//         res.status(200).json({
+//             message: "Product deleted successfully",
+//             deleteProductDetailsById
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({ message: 'Failed to delete product' });
+//     }
+// }
+
+
 
 
 
@@ -223,13 +334,25 @@ export const deleteProductDetailsById = async (req, res) => {
     const productId = req.params.id;
 
     try {
-        const deleteProductDetailsById = await productModel.findByIdAndDelete(productId);
+        const [result] = await dbConnection.promise().query(
+            'DELETE FROM products WHERE id = ?',
+            [productId]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({
+                message: "Product not found"
+            });
+        }
+
         res.status(200).json({
             message: "Product deleted successfully",
-            deleteProductDetailsById
+            deletedProductId: productId
         });
     } catch (error) {
         console.error(error);
-        res.status(500).json({ message: 'Failed to delete product' });
+        res.status(500).json({
+            message: 'Failed to delete product'
+        });
     }
-}
+};

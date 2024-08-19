@@ -559,7 +559,7 @@ const BootstrapTable = () => {
   const apiCall = () => {
     const fetchDetails = async () => {
       try {
-        const res = await fetch('https://akki-1ni7.onrender.com/api/getproductdetails');
+        const res = await fetch('http://localhost:7000/api/getproductdetails');
         if (!res.ok) {
           throw new Error('Network response was not ok');
         }
@@ -615,6 +615,7 @@ const BootstrapTable = () => {
   //   setProductDialog(true);
   // };
 
+
   const hideDialog = () => {
     setSubmitted(false);
     setProductDialog(false);
@@ -634,13 +635,13 @@ const BootstrapTable = () => {
 
   const saveEditProduct = async () => {
     try {
-      const res = await fetch(`https://akki-1ni7.onrender.com/api/updateproductdetails/${product._id}`, {
+      const res = await fetch(`http://localhost:7000/api/updateproductdetails/${product.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
         },
         body: JSON.stringify(product),
-        credentials: 'include' 
+        credentials: 'include'
       });
 
       if (!res.ok) {
@@ -648,11 +649,11 @@ const BootstrapTable = () => {
       }
 
       const updatedProduct = await res.json();
-      const updatedProducts = productDetails.map((p) => (p._id === updatedProduct._id ? updatedProduct : p));
+      const updatedProducts = productDetails.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
       setProductDetails(updatedProducts);
       toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
       setProductDialog(false);
-      apiCall()
+      apiCall();
     } catch (error) {
       console.error('Error updating product:', error);
       toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to update product', life: 3000 });
@@ -680,17 +681,17 @@ const BootstrapTable = () => {
 
   const deleteProduct = async () => {
     try {
-      const res = await fetch(`https://akki-1ni7.onrender.com/api/deleteproductdetails/${product._id}`, {
+      const res = await fetch(`http://localhost:7000/api/deleteproductdetails/${product.id}`, {
         method: 'DELETE',
-        credentials: 'include' 
+        credentials: 'include'
       });
 
       if (!res.ok) {
         throw new Error('Failed to delete product');
       }
 
-      const deletedProductId = product._id;
-      const updatedProducts = productDetails.filter((p) => p._id !== deletedProductId);
+      const deletedProductId = product.id;
+      const updatedProducts = productDetails.filter((p) => p.id !== deletedProductId);
       setProductDetails(updatedProducts);
       toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
       setDeleteProductDialog(false);
@@ -740,6 +741,7 @@ const BootstrapTable = () => {
 
     return index;
   };
+
 
   const createId = () => {
     let id = '';
@@ -805,7 +807,7 @@ const BootstrapTable = () => {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ ids: selectedIds }),
-          credentials: 'include' 
+          credentials: 'include'
         });
 
         if (!res.ok) {
