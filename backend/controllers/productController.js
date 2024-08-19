@@ -309,6 +309,46 @@ export const deleteAllProduct = async (req, res) => {
 
 
 
+
+export const deleteProducts = async (req, res) => {
+    const productIds = req.body.productIds;
+
+    try {
+        if (productIds && productIds.length > 0) {
+            const [result] = await dbConnection.promise().query(
+                'DELETE FROM products WHERE id IN (?)',
+                [productIds]
+            );
+
+            res.status(200).json({
+                message: "Selected products deleted successfully",
+                deletedCount: result.affectedRows
+            });
+        } else {
+            // Delete all products if no IDs are provided
+            const [result] = await dbConnection.promise().query('DELETE FROM products');
+
+            res.status(200).json({
+                message: "All products deleted successfully",
+                deletedCount: result.affectedRows
+            });
+        }
+    } catch (error) {
+        console.error(error);
+        res.status(500).json({
+            message: error.message
+        });
+    }
+};
+
+
+
+
+
+
+
+
+
 // export const deleteProductDetailsById = async (req, res) => {
 //     const productId = req.params.id;
 

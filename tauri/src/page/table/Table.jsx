@@ -796,41 +796,98 @@ const BootstrapTable = () => {
 
 
 
+  // const deleteSelectedOrAllProducts = async () => {
+  //   if (selectedProducts && selectedProducts.length > 0) {
+  //     // Delete selected products
+  //     const selectedIds = selectedProducts.map(product => product.id);
+  //     try {
+  //       const res = await fetch('https://akki-1ni7.onrender.com/api/deleteallproduct', {
+  //         method: 'DELETE',
+  //         headers: {
+  //           'Content-Type': 'application/json',
+  //         },
+  //         body: JSON.stringify({ ids: selectedIds }),
+  //         credentials: 'include'
+  //       });
+
+  //       if (!res.ok) {
+  //         throw new Error('Failed to delete selected products');
+  //       }
+
+  //       const updatedProducts = productDetails.filter(p => !selectedIds.includes(p.id));
+  //       setProductDetails(updatedProducts);
+  //       toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Selected Products Deleted', life: 3000 });
+  //       setSelectedProducts(null);
+
+  //       setDeleteProductsDialog(false);
+
+  //     } catch (error) {
+  //       console.error('Error deleting selected products:', error);
+  //       toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to delete selected products', life: 3000 });
+  //     }
+  //   } else {
+  //     // Delete all products
+  //     await deleteProduct();
+  //   }
+  // };
+
+
+
+
+
   const deleteSelectedOrAllProducts = async () => {
     if (selectedProducts && selectedProducts.length > 0) {
       // Delete selected products
-      const selectedIds = selectedProducts.map(product => product._id);
+      const selectedIds = selectedProducts.map(product => product.id);
+  
       try {
-        const res = await fetch('https://akki-1ni7.onrender.com/api/deleteallproduct', {
+        const res = await fetch('http://localhost:7000/api/deleteproduct', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
           },
           body: JSON.stringify({ ids: selectedIds }),
-          credentials: 'include'
+          credentials: 'include',
         });
-
+  
         if (!res.ok) {
           throw new Error('Failed to delete selected products');
         }
-
-        const updatedProducts = productDetails.filter(p => !selectedIds.includes(p._id));
+  
+        const updatedProducts = productDetails.filter(p => !selectedIds.includes(p.id));
         setProductDetails(updatedProducts);
         toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Selected Products Deleted', life: 3000 });
-        setSelectedProducts(null);
-
+        setSelectedProducts([]);
         setDeleteProductsDialog(false);
-
+  
       } catch (error) {
         console.error('Error deleting selected products:', error);
         toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to delete selected products', life: 3000 });
       }
+  
     } else {
       // Delete all products
-      await deleteProduct();
+      try {
+        const res = await fetch('http://localhost:7000/api/deleteallproduct', {
+          method: 'DELETE',
+          credentials: 'include',
+        });
+  
+        if (!res.ok) {
+          throw new Error('Failed to delete all products');
+        }
+  
+        setProductDetails([]);
+        toast.current.show({ severity: 'success', summary: 'Successful', detail: 'All Products Deleted', life: 3000 });
+        setDeleteProductsDialog(false);
+  
+      } catch (error) {
+        console.error('Error deleting all products:', error);
+        toast.current.show({ severity: 'error', summary: 'Error', detail: 'Failed to delete all products', life: 3000 });
+      }
     }
   };
-
+  
 
 
 
