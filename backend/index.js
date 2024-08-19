@@ -15,7 +15,7 @@ dotenv.config();
 const app = express();
 
 const corsOptions = {
-    origin: 'http://192.168.29.93:3000',
+    origin: '*',
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true
