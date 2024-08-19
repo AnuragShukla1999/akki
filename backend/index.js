@@ -14,14 +14,23 @@ dotenv.config();
 
 const app = express();
 
+const allowedOrigins = ['http://192.168.29.93:3000', 'http://localhost:3000']; 
+
 const corsOptions = {
-    origin: '*',
+    origin: (origin, callback) => {
+        if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
+            callback(null, true);
+        } else {
+            callback(new Error('Not allowed by CORS'));
+        }
+    },
     methods: 'GET,POST,PUT,DELETE',
     allowedHeaders: 'Content-Type,Authorization',
     credentials: true
-  };
-  
-  app.use(cors(corsOptions));
+};
+
+
+app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', 'true');
@@ -48,7 +57,7 @@ app.use('/api', userRouter);
 app.use('/api', locationRouter);
 
 
-app.listen(process.env.PORT,  () => {
+app.listen(process.env.PORT, () => {
     console.log(`server is connnected at ${process.env.PORT}`);
 });
 
@@ -67,7 +76,7 @@ dbConnection();
 //     dbConnection.query("CREATE DATABASE IF NOT EXISTS office", (err, result) => {
 //         if (err) {
 //             console.error('Error creating database:', err);
-//             return; // Exit early to avoid further issues 
+//             return; // Exit early to avoid further issues
 //         }
 //         console.log("Database created or already exists");
 //     });
