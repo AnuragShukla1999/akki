@@ -181,7 +181,6 @@ const Signin = () => {
                     <p>
                         Don't have an account?{' '}
                         <Link to="/signup">Signup</Link>
-                        <Link to="/dashboard">Dashboard</Link>
                     </p>
                 </div>
             </div>
