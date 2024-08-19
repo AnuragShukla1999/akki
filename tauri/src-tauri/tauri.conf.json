@@ -3,8 +3,8 @@
   "build": {
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm start",
-    "devPath": "http://192.168.29.93:3000",
     "distDir": "../build",
+    "devPath": "",
     "withGlobalTauri": true
   },
   "package": {
@@ -65,8 +65,7 @@
         "height": 600,
         "resizable": true,
         "title": "tauri_app",
-        "width": 800,
-        "url": "http://192.168.29.93:3000"
+        "width": 800
       }
     ]
   }
