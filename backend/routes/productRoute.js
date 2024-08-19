@@ -1,15 +1,15 @@
 import express from 'express';
-import { uploadProductDetails, updateProductDetails, deleteProductDetailsById, deleteProducts, deleteAllProduct } from '../controllers/productController.js';
-import { getProductDetails, getProductDetailsById } from '../controllers/getProductDetails.js'
+import { uploadProductDetails, updateProductDetails, deleteProducts, deleteAllProduct } from '../controllers/productController.js';
+import { getProductDetails } from '../controllers/getProductDetails.js'
 
 const router = express.Router();
 
 
 router.post('/productorderdetails', uploadProductDetails);
 router.get('/getproductdetails', getProductDetails);
-router.get('/getproductdetails/:id', getProductDetailsById);
+// router.get('/getproductdetails/:id', getProductDetailsById);
 router.put('/updateproductdetails/:id', updateProductDetails);
-router.delete('/deleteproductdetails/:id', deleteProductDetailsById);
+// router.delete('/deleteproductdetails/:id', deleteProductDetailsById);
 
 router.delete('/deleteallproduct', deleteAllProduct);
 router.delete('/deleteproduct', deleteProducts);

@@ -8,6 +8,7 @@ import authRouter from './routes/authRoute.js';
 import userRouter from "./routes/userRoute.js";
 import locationRouter from './routes/locationRoute.js';
 import ProductRouter from './routes/productRoute.js';
+import dbConnection from "./config/db.js";
 
 dotenv.config();
 
@@ -50,6 +51,10 @@ app.use('/api', locationRouter);
 app.listen(process.env.PORT,  () => {
     console.log(`server is connnected at ${process.env.PORT}`);
 });
+
+
+dbConnection();
+
 
 
 // dbConnection.connect((err) => {
