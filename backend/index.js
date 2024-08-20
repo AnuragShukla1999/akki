@@ -29,13 +29,15 @@ const app = express();
 //     credentials: true
 // };
 
-app.use(cors({
-    origin: 'http://localhost:1420',
-    methods: ['GET', 'POST', 'PUT', 'DELETE'],
-    allowedHeaders: ['Content-Type', 'Authorization'],
-    credentials: true
-}));
+// app.use(cors({
+//     origin: 'http://localhost:1420',
+//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
+//     allowedHeaders: ['Content-Type', 'Authorization'],
+//     credentials: true
+// }));
 
+
+app.use(cors());
 
 // app.use(cors(corsOptions));
 
