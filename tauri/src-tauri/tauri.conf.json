@@ -4,7 +4,7 @@
     "beforeBuildCommand": "npm run build",
     "beforeDevCommand": "npm start",
     "distDir": "../build",
-    "devPath": "",
+    "devPath": "../build",
     "withGlobalTauri": true
   },
   "package": {
