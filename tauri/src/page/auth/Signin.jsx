@@ -79,6 +79,7 @@ const Signin = () => {
             console.error('Signin error:', error);
             setLoading(false);
             toast.error(`An error occurred: ${error.message}`);
+            toast.error('An Error in Catch Block');
         }
     };
 
