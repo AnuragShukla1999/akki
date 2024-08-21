@@ -286,8 +286,8 @@ const DashDefault = () => {
   //   setProductDetails(prev => ({
   //     ...prev,
   //     completeAddress: completeAddress,
-  //     state: aaa.state || productDetails.state, // Keep manual input if available
-  //     city: aaa.city || productDetails.city    // Keep manual input if available
+  //     state: aaa.state || productDetails.state,
+  //     city: aaa.city || productDetails.city
   //   }));
   // };
 

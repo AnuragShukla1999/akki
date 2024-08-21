@@ -56,9 +56,9 @@ const Signin = () => {
             //     password: userData.password
             // });
 
-            if (!response.ok) {
-                throw new Error('Network response was not ok');
-            }
+            // if (!response.ok) {
+            //     throw new Error('Network response was not ok');
+            // }
 
             const resData = await response.json();
             console.log(resData)
@@ -182,6 +182,7 @@ const Signin = () => {
                     <p>
                         Don't have an account?{' '}
                         <Link to="/signup">Signup</Link>
+                        <Link to="/dashboard">Dashboard</Link>
                     </p>
                 </div>
             </div>

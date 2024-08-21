@@ -14,6 +14,25 @@ dotenv.config();
 
 const app = express();
 
+
+// import os from 'os';
+
+// const networkInterfaces = os.networkInterfaces();
+// const ip = networkInterfaces['eth0'][0]['address']
+
+// console.log(networkInterfaces);
+
+
+
+import { internalIpV6, internalIpV4 } from 'internal-ip';
+
+
+console.log(await internalIpV6());
+
+console.log(await internalIpV4());
+
+
+
 // const allowedOrigins = ['http://192.168.29.93:3000', 'http://localhost:3000']; 
 
 // const corsOptions = {
@@ -29,17 +48,17 @@ const app = express();
 //     credentials: true
 // };
 
-// app.use(cors({
-//     origin: 'http://localhost:1420',
-//     methods: ['GET', 'POST', 'PUT', 'DELETE'],
-//     allowedHeaders: ['Content-Type', 'Authorization'],
-//     credentials: true
-// }));
-
-
 app.use(cors({
-    origin: '*'
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    allowedHeaders: ['Content-Type', 'Authorization'],
+    credentials: true
 }));
+
+
+// app.use(cors({
+//     origin: '*'
+// }));
 
 // app.use(cors(corsOptions));
 

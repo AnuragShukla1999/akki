@@ -8,14 +8,14 @@ import BootstrapTable from './page/table/Table';
 
 import { ToastContainer } from 'react-toastify';
 import Layout from './component/Layout';
-import { useContext } from 'react';
-import { AuthContext } from './context/ConfigContext';
+// import { useContext } from 'react';
+// import { AuthContext } from './context/ConfigContext';
 
 function App() {
 
-  const userLoggedIn = localStorage.getItem('user');
+  // const userLoggedIn = localStorage.getItem('user');
 
-  const { isAuthenticated } = useContext(AuthContext);
+  // const { isAuthenticated } = useContext(AuthContext);
 
   return (
     <BrowserRouter>
@@ -25,8 +25,11 @@ function App() {
         <Route path='/signup' element={<Signup />} />
 
         <Route element={<Layout />}>
-          <Route path='/dashboard' element={userLoggedIn || isAuthenticated ? <DashDefault /> : <Navigate to="/" />} />
-          <Route path='/table' element={userLoggedIn || isAuthenticated ? <BootstrapTable /> : <Navigate to="/" />} />
+          {/* <Route path='/dashboard' element={userLoggedIn || isAuthenticated ? <DashDefault /> : <Navigate to="/" />} />
+          <Route path='/table' element={userLoggedIn || isAuthenticated ? <BootstrapTable /> : <Navigate to="/" />} /> */}
+
+          <Route path='/dashboard' element={<DashDefault />} />
+          <Route path='/table' element={<BootstrapTable />} />
         </Route>
       </Routes>
     </BrowserRouter>
