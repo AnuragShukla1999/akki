@@ -8,6 +8,7 @@ import BootstrapTable from './page/table/Table';
 
 import { ToastContainer } from 'react-toastify';
 import Layout from './component/Layout';
+import Location from './page/location';
 // import { useContext } from 'react';
 // import { AuthContext } from './context/ConfigContext';
 
@@ -23,6 +24,7 @@ function App() {
       <Routes>
         <Route path='/' element={<Signin />} />
         <Route path='/signup' element={<Signup />} />
+        <Route path='/location' element={<Location/>} />
 
         <Route element={<Layout />}>
           {/* <Route path='/dashboard' element={userLoggedIn || isAuthenticated ? <DashDefault /> : <Navigate to="/" />} />

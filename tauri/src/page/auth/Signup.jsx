@@ -4,6 +4,7 @@ import { Link, useNavigate } from 'react-router-dom'
 import '../../styles/Signup.css';
 
 import toast from 'react-hot-toast';
+import { API } from '../../utility/api';
 
 const Signup = () => {
 
@@ -30,7 +31,7 @@ const Signup = () => {
         e.preventDefault();
 
         try {
-            const res = await fetch('https://akki-1ni7.onrender.com/api/signup', {
+            const res = await fetch(`${API}/signup`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData),

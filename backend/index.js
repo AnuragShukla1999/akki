@@ -5,10 +5,9 @@ import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
 
 import authRouter from './routes/authRoute.js';
-import userRouter from "./routes/userRoute.js";
 import locationRouter from './routes/locationRoute.js';
 import ProductRouter from './routes/productRoute.js';
-import dbConnection from "./config/db.js";
+// import dbConnection from "./config/db.js";
 
 dotenv.config();
 
@@ -83,7 +82,6 @@ app.get('/', (req, res) => {
 // api
 app.use('/api', authRouter);
 app.use('/api', ProductRouter);
-app.use('/api', userRouter);
 app.use('/api', locationRouter);
 
 
@@ -93,7 +91,7 @@ app.listen(process.env.PORT, () => {
 
 
 
-dbConnection();
+// dbConnection();
 
 
 

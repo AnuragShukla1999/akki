@@ -3,6 +3,7 @@ import toast from 'react-hot-toast';
 import jsPDF from 'jspdf';
 import '../../styles/Dashboard.css';
 import { AuthContext } from '../../context/ConfigContext';
+import { API } from '../../utility/api';
 
 const DashDefault = () => {
   const { setProduct } = useContext(AuthContext);
@@ -33,15 +34,16 @@ const DashDefault = () => {
     amount: ''
   });
 
-  const handleChange = (e) => {
-    setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+  // const handleChange = (e) => {
+  //   setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
 
-    console.log(e.target.value)
-  };
+  //   console.log(e.target.value)
+  // };
 
 
   // const handleChange = (e) => {
   //   const { name, value } = e.target;
+  //   console.log(e.target.value)
 
   //   // Handle pincode change separately
   //   if (name === 'pincode') {
@@ -70,10 +72,24 @@ const DashDefault = () => {
 
 
 
+
+  const handleChange = (e) => {
+    setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+    console.log(e.target.value);
+
+    // If the pincode changes manually, reset the location state
+    if (e.target.name === 'pincode') {
+      setLocation([]);
+    }
+  };
+
+  
+
+  // Submit button for Form
   const handleSubmit = async (e) => {
     e.preventDefault();
     try {
-      const res = await fetch('https://akki-1ni7.onrender.com/api/productorderdetails', {
+      const res = await fetch(`${API}/productorderdetails`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
@@ -95,6 +111,8 @@ const DashDefault = () => {
   };
 
 
+
+  // PDF Generate Form
   const generatePDF = ({
     fullName,
     email,
@@ -224,16 +242,66 @@ const DashDefault = () => {
   };
 
 
-  // const [location, setLocation] = useState([]);
-  // const [aaa, setAaa] = useState([]);
-  // const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  // const fetchLocation = async (e) => {
-  //   const pincode = e.target.value;
+
+  // Fetch Location according to Pincode
+  const [location, setLocation] = useState([]);
+  const [aaa, setAaa] = useState([]);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+
+  const fetchLocation = async (e) => {
+    const pincode = e.target.value;
+    try {
+      if (pincode.length === 6) {
+        setIsLoadingLocation(true);
+        const url = `${API}/getlocation/${pincode}`;
+        const res = await fetch(url);
+
+        if (!res.ok) {
+          throw new Error('Failed to fetch data');
+        }
+
+        const data = await res.json();
+
+        if (res.ok && data) {
+          setLocation(data.addresses);
+          setAaa(data);
+          setProductDetails({
+            ...productDetails,
+            state: data.state,
+            city: data.city
+          });
+        } else {
+          setLocation([]);
+          setAaa({});
+          setProductDetails({ ...productDetails, state: '', city: '' });
+        }
+        setIsLoadingLocation(false);
+      } else {
+        setProductDetails({
+          ...productDetails,
+          state: '',
+          city: ''
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      setIsLoadingLocation(false);
+      setProductDetails({ ...productDetails, state: '', city: '' });
+    }
+  }
+
+
+
+
+
+
+  // Updated fetchLocation function
+  // const fetchLocation = async (pincode) => {
   //   try {
   //     if (pincode.length === 6) {
   //       setIsLoadingLocation(true);
-  //       const url = `http://192.168.29.93:7000/api/getlocation/${pincode}`;
+  //       const url = `http://localhost:7000/api/getlocation/${pincode}`;
   //       const res = await fetch(url);
 
   //       if (!res.ok) {
@@ -242,32 +310,48 @@ const DashDefault = () => {
 
   //       const data = await res.json();
   //       if (res.ok && data.data) {
+
+  //         console.log("Fetched Data:", data);
   //         setLocation(data.data.addresses);
   //         setAaa(data.data);
-  //         setProductDetails({
-  //           ...productDetails,
+  //         setProductDetails(prev => ({
+  //           ...prev,
   //           state: data.data.state,
   //           city: data.data.city
-  //         });
+  //         }));
   //       } else {
   //         setLocation([]);
   //         setAaa({});
-  //         setProductDetails({ ...productDetails, state: '', city: '' });
+  //         setProductDetails(prev => ({
+  //           ...prev,
+  //           state: '',
+  //           city: ''
+  //         }));
   //       }
   //       setIsLoadingLocation(false);
   //     } else {
-  //       setProductDetails({
-  //         ...productDetails,
+  //       setProductDetails(prev => ({
+  //         ...prev,
   //         state: '',
   //         city: ''
-  //       });
+  //       }));
   //     }
   //   } catch (error) {
   //     console.log("Error", error);
   //     setIsLoadingLocation(false);
-  //     setProductDetails({ ...productDetails, state: '', city: '' });
+  //     setProductDetails(prev => ({
+  //       ...prev,
+  //       state: '',
+  //       city: ''
+  //     }));
   //   }
   // }
+
+
+
+
+
+
 
   // const handleLocationSelect = (e) => {
   //   const completeAddress = e.target.value;
@@ -281,15 +365,15 @@ const DashDefault = () => {
   // };
 
 
-  // const handleLocationSelect = (e) => {
-  //   const completeAddress = e.target.value;
-  //   setProductDetails(prev => ({
-  //     ...prev,
-  //     completeAddress: completeAddress,
-  //     state: aaa.state || productDetails.state,
-  //     city: aaa.city || productDetails.city
-  //   }));
-  // };
+  const handleLocationSelect = (e) => {
+    const completeAddress = e.target.value;
+    setProductDetails(prev => ({
+      ...prev,
+      completeAddress: completeAddress,
+      state: aaa.state || productDetails.state,
+      city: aaa.city || productDetails.city
+    }));
+  };
 
   return (
     <div className="container">
@@ -327,19 +411,41 @@ const DashDefault = () => {
           <div className="card-body">
             <div className="form-group">
               <label>Complete Address</label>
-              <input type="text" name='completeAddress' placeholder="Enter Address" onChange={handleChange} />
+
+              {location.length > 0 && !isLoadingLocation ? (
+                <select as="select" name="completeAddress" onChange={handleLocationSelect}>
+                  <option>Select Address...</option>
+                  {location.map((loc, index) => (
+                    <option key={loc._id} value={loc.locationName}>
+                      {`${loc.locationName}`}
+                    </option>
+                  ))}
+                </select>
+              ) : (
+                <input type="text" name='completeAddress' placeholder="Enter Address" onChange={handleChange} />
+              )}
+
             </div>
             <div className="form-group">
               <label>Pincode</label>
-              <input type="number" name="pincode" placeholder="Enter pincode" onChange={handleChange}/>
+              <input type="number" name="pincode" placeholder="Enter pincode" onChange={handleChange} onInput={fetchLocation} />
             </div>
             <div className="form-group">
               <label>State</label>
-              <input type="text" name="state" placeholder="Enter state" onChange={handleChange} />
+
+              {location.length > 0 && !isLoadingLocation ? (
+                <input type="text" name="state" placeholder="Enter state" onChange={handleLocationSelect} value={aaa.state ? productDetails.state : ''} />
+              ) : (
+                <input type="text" name="state" placeholder="Enter state" onChange={handleChange} />
+              )}
             </div>
             <div className="form-group">
               <label>City</label>
-              <input type="text" name="city" placeholder="Enter city" onChange={handleChange} />
+              {location.length > 0 && !isLoadingLocation ? (
+                <input type="text" name="city" placeholder="Enter city" onChange={handleLocationSelect} value={aaa.city ? productDetails.city : ''} />
+              ) : (
+                <input type="text" name="city" placeholder="Enter city" onChange={handleChange}/>
+              )}
             </div>
             <div className="form-group">
               <label>Landmark</label>

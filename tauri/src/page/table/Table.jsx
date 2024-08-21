@@ -15,6 +15,7 @@ import { InputIcon } from 'primereact/inputicon';
 // import { InputNumber } from 'primereact/inputnumber';
 import { Dialog } from 'primereact/dialog';
 import { InputText } from 'primereact/inputtext';
+import { API } from '../../utility/api';
 // import { Tag } from 'primereact/tag';
 
 // import axios from 'axios';
@@ -26,11 +27,12 @@ const BootstrapTable = () => {
   useEffect(() => {
     apiCall()
   }, []);
+  
 
   const apiCall = () => {
     const fetchDetails = async () => {
       try {
-        const res = await fetch('https://akki-1ni7.onrender.com/api/getproductdetails');
+        const res = await fetch(`${API}/getproductdetails`);
         if (!res.ok) {
           throw new Error('Network response was not ok');
         }
@@ -106,7 +108,7 @@ const BootstrapTable = () => {
 
   const saveEditProduct = async () => {
     try {
-      const res = await fetch(`https://akki-1ni7.onrender.com/api/updateproductdetails/${product._id}`, {
+      const res = await fetch(`${API}/updateproductdetails/${product._id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -152,7 +154,7 @@ const BootstrapTable = () => {
 
   const deleteProduct = async () => {
     try {
-      const res = await fetch(`https://akki-1ni7.onrender.com/api/deleteproductdetails/${product._id}`, {
+      const res = await fetch(`${API}/deleteproductdetails/${product._id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -312,7 +314,7 @@ const BootstrapTable = () => {
       const selectedIds = selectedProducts.map(product => product.id);
   
       try {
-        const res = await fetch('https://akki-1ni7.onrender.com/api/deleteproduct', {
+        const res = await fetch('${API}/deleteproduct', {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',
@@ -339,7 +341,7 @@ const BootstrapTable = () => {
     } else {
       // Delete all products
       try {
-        const res = await fetch('https://akki-1ni7.onrender.com/api/deleteallproduct', {
+        const res = await fetch(`${API}/deleteallproduct`, {
           method: 'DELETE',
           credentials: 'include',
         });

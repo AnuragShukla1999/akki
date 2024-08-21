@@ -6,6 +6,7 @@ import { AuthContext } from '../../context/ConfigContext';
 
 import toast from 'react-hot-toast';
 import { Link, useNavigate } from 'react-router-dom';
+import { API } from '../../utility/api';
 
 // import { invoke } from '@tauri-apps/api/tauri';
 // const { invoke } = window.__TAURI__.tauri;
@@ -43,7 +44,7 @@ const Signin = () => {
         e.preventDefault();
         setLoading(true);
         try {
-            const response = await fetch('https://akki-1ni7.onrender.com/api/signin', {
+            const response = await fetch(`${API}/signin`, {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(userData),
