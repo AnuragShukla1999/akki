@@ -3,29 +3,18 @@ import dotenv from "dotenv";
 import cors from "cors";
 import bodyParser from "body-parser";
 import cookieParser from "cookie-parser";
-
 import authRouter from './routes/authRoute.js';
 import locationRouter from './routes/locationRoute.js';
 import ProductRouter from './routes/productRoute.js';
-// import dbConnection from "./config/db.js";
+import sequelize from "./config/db.js";
 
 dotenv.config();
 
 const app = express();
 
 
-// import os from 'os';
-
-// const networkInterfaces = os.networkInterfaces();
-// const ip = networkInterfaces['eth0'][0]['address']
-
-// console.log(networkInterfaces);
-
-
 
 import { internalIpV6, internalIpV4 } from 'internal-ip';
-import sequelize from "./config/db.js";
-
 
 console.log(await internalIpV6());
 
@@ -68,13 +57,11 @@ app.use((req, res, next) => {
 });
 
 
-
 app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 
 
-// app.use(express.static('frontend/build'));
 
 app.get('/', (req, res) => {
     res.send('Hello World!')
@@ -84,14 +71,6 @@ app.get('/', (req, res) => {
 app.use('/api', authRouter);
 app.use('/api', ProductRouter);
 app.use('/api', locationRouter);
-
-
-// app.listen(process.env.PORT, () => {
-//     console.log(`server is connnected at ${process.env.PORT}`);
-// });
-
-
-
 
 
 
@@ -112,31 +91,3 @@ const startServer = async () => {
 
 
 startServer();
-
-
-
-
-
-
-// dbConnection();
-
-
-
-// dbConnection.connect((err) => {
-//     if (err) {
-//         console.error('Error connecting to MySQL database:', err);
-//         return; // Exit early to avoid further issues
-//     }
-//     console.log('Connected to MySQL database');
-//     // Create database if it does not exist
-//     dbConnection.query("CREATE DATABASE IF NOT EXISTS office", (err, result) => {
-//         if (err) {
-//             console.error('Error creating database:', err);
-//             return; // Exit early to avoid further issues
-//         }
-//         console.log("Database created or already exists");
-//     });
-// })
-
-
-// console.log("Database", dbConnection);

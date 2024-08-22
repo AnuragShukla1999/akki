@@ -4,10 +4,8 @@ import { getProductDetails } from '../controllers/getProductDetails.js'
 
 const router = express.Router();
 
-
 router.post('/productorderdetails', uploadProductDetails);
 router.get('/getproductdetails', getProductDetails);
-// router.get('/getproductdetails/:id', getProductDetailsById);
 router.put('/updateproductdetails/:id', updateProductDetails);
 router.delete('/deleteproductdetails/:id', deleteProductDetailsById);
 
