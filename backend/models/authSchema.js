@@ -1,28 +1,58 @@
-import mongoose from "mongoose";
+// import mongoose from "mongoose";
 
 
-const authSchema = new mongoose.Schema({
+// const authSchema = new mongoose.Schema({
+//     name: {
+//         type: String,
+//         unique: true,
+//         required: true
+//     },
+//     email: {
+//         type: String,
+//         unique: true,
+//         required: true
+//     },
+//     password: {
+//         type: String,
+//         unique: true,
+//         required: true
+//     }
+// },
+// {
+//     timestamps: true
+// });
+
+
+// const authModel = mongoose.model("user", authSchema);
+
+// export default authModel;
+
+
+
+
+
+
+
+import { DataTypes } from 'sequelize';
+import sequelize from '../config/db.js';
+
+const Auth = sequelize.define('Auth', {
     name: {
-        type: String,
-        unique: true,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false
     },
     email: {
-        type: String,
-        unique: true,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false,
+        unique: true
     },
     password: {
-        type: String,
-        unique: true,
-        required: true
+        type: DataTypes.STRING,
+        allowNull: false
     }
-},
-{
+}, {
+    tableName: 'users', 
     timestamps: true
 });
 
-
-const authModel = mongoose.model("user", authSchema);
-
-export default authModel;
+export default Auth;

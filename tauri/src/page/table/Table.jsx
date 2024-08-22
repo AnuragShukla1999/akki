@@ -108,7 +108,7 @@ const BootstrapTable = () => {
 
   const saveEditProduct = async () => {
     try {
-      const res = await fetch(`${API}/updateproductdetails/${product._id}`, {
+      const res = await fetch(`${API}/updateproductdetails/${product.id}`, {
         method: 'PUT',
         headers: {
           'Content-Type': 'application/json',
@@ -122,7 +122,7 @@ const BootstrapTable = () => {
       }
 
       const updatedProduct = await res.json();
-      const updatedProducts = productDetails.map((p) => (p._id === updatedProduct._id ? updatedProduct : p));
+      const updatedProducts = productDetails.map((p) => (p.id === updatedProduct.id ? updatedProduct : p));
       setProductDetails(updatedProducts);
       toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Updated', life: 3000 });
       setProductDialog(false);
@@ -154,7 +154,7 @@ const BootstrapTable = () => {
 
   const deleteProduct = async () => {
     try {
-      const res = await fetch(`${API}/deleteproductdetails/${product._id}`, {
+      const res = await fetch(`${API}/deleteproductdetails/${product.id}`, {
         method: 'DELETE',
         credentials: 'include'
       });
@@ -164,7 +164,7 @@ const BootstrapTable = () => {
       }
 
       const deletedProductId = product.id;
-      const updatedProducts = productDetails.filter((p) => p._id !== deletedProductId);
+      const updatedProducts = productDetails.filter((p) => p.id !== deletedProductId);
       setProductDetails(updatedProducts);
       toast.current.show({ severity: 'success', summary: 'Successful', detail: 'Product Deleted', life: 3000 });
       setDeleteProductDialog(false);
@@ -206,7 +206,7 @@ const BootstrapTable = () => {
     let index = -1;
 
     for (let i = 0; i < products.length; i++) {
-      if (products[i]._id === id) {
+      if (products[i].id === id) {
         index = i;
         break;
       }
@@ -314,7 +314,7 @@ const BootstrapTable = () => {
       const selectedIds = selectedProducts.map(product => product.id);
   
       try {
-        const res = await fetch('${API}/deleteproduct', {
+        const res = await fetch(`${API}/deleteproduct`, {
           method: 'DELETE',
           headers: {
             'Content-Type': 'application/json',

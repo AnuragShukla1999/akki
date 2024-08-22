@@ -24,6 +24,7 @@ const app = express();
 
 
 import { internalIpV6, internalIpV4 } from 'internal-ip';
+import sequelize from "./config/db.js";
 
 
 console.log(await internalIpV6());
@@ -85,9 +86,35 @@ app.use('/api', ProductRouter);
 app.use('/api', locationRouter);
 
 
-app.listen(process.env.PORT, () => {
-    console.log(`server is connnected at ${process.env.PORT}`);
-});
+// app.listen(process.env.PORT, () => {
+//     console.log(`server is connnected at ${process.env.PORT}`);
+// });
+
+
+
+
+
+
+const startServer = async () => {
+    try {
+        await sequelize.authenticate();
+        console.log('Database connection has been established successfully.');
+
+        await sequelize.sync({ alter: true });
+
+        app.listen(process.env.PORT, () => {
+            console.log(`Server is running at http://localhost:${process.env.PORT}`);
+        });
+    } catch (error) {
+        console.error('Error syncing database or starting server:', error);
+    }
+};
+
+
+startServer();
+
+
+
 
 
 

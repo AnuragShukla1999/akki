@@ -4,7 +4,8 @@
 
 import bcryptjs from 'bcryptjs';
 import jwt from 'jsonwebtoken';
-import dbConnection from "../config/db.js";
+// import dbConnection from "../config/db.js";
+import Auth from '../models/authSchema.js';
 
 
 
@@ -46,32 +47,79 @@ import dbConnection from "../config/db.js";
 
 
 
+// export const signup = async (req, res, next) => {
+//     const { name, email, password } = req.body;
+
+//     try {
+//         const [rows] = await dbConnection.promise().query('SELECT * FROM users WHERE email = ?', [email]);
+
+//         if (rows.length > 0) {
+//             throw new Error("User already exists");
+//         }
+
+//         if (!email || !password) {
+//             return res.status(400).json({ message: 'name, email and password are required' });
+//         }
+
+//         const hashedPassword = bcryptjs.hashSync(password, 10);
+
+//         await dbConnection.promise().query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
+
+//         res.status(201).json({
+//             id: result.insertId,
+//             message: "User created successfully"
+//         });
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+
+
+
+
+
 export const signup = async (req, res, next) => {
     const { name, email, password } = req.body;
 
     try {
-        const [rows] = await dbConnection.promise().query('SELECT * FROM users WHERE email = ?', [email]);
-
-        if (rows.length > 0) {
-            throw new Error("User already exists");
+        // Validate input
+        if (!name || !email || !password) {
+            return res.status(400).json({ message: 'Name, email, and password are required' });
         }
 
-        if (!email || !password) {
-            return res.status(400).json({ message: 'name, email and password are required' });
+        // Check if the user already exists
+        const existingUser = await Auth.findOne({ where: { email } });
+        if (existingUser) {
+            return res.status(400).json({ message: 'User already exists' });
         }
 
+        // Hash the password
         const hashedPassword = bcryptjs.hashSync(password, 10);
 
-        await dbConnection.promise().query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
+        // Create a new user
+        const newUser = await Auth.create({
+            name,
+            email,
+            password: hashedPassword
+        });
 
         res.status(201).json({
-            id: result.insertId,
-            message: "User created successfully"
+            id: newUser.id,
+            message: 'User created successfully'
         });
     } catch (error) {
+        console.error('Error in signup:', error);
         next(error);
     }
 };
+
+
+
+
+
+
+
 
 
 
@@ -117,40 +165,86 @@ export const signup = async (req, res, next) => {
 
 
 
+// export const signin = async (req, res, next) => {
+//     const { email, password } = req.body;
+
+//     try {
+//         const [rows] = await dbConnection.promise().query('SELECT * FROM users WHERE email = ?', [email]);
+
+//         if (rows.length === 0) {
+//             return res.status(401).json({
+//                 message: "User not found"
+//             });
+//         }
+
+//         const validUser = rows[0];
+//         const validPassword = bcryptjs.compareSync(password, validUser.password);
+
+//         if (!validPassword) {
+//             return res.status(401).json({
+//                 message: "Wrong password"
+//             });
+//         }
+
+//         const token = jwt.sign({ id: validUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+
+//         res.cookie('access_token', token).json({
+//             message: "Sign in successfully",
+//             token,
+//             validUser,
+//             success: true
+//         });
+
+//     } catch (error) {
+//         next(error);
+//     }
+// };
+
+
+
+
+
+
+
+
+
 export const signin = async (req, res, next) => {
     const { email, password } = req.body;
 
     try {
-        const [rows] = await dbConnection.promise().query('SELECT * FROM users WHERE email = ?', [email]);
-
-        if (rows.length === 0) {
-            return res.status(401).json({
-                message: "User not found"
-            });
+        if (!email || !password) {
+            return res.status(400).json({ message: 'Email and password are required' });
         }
 
-        const validUser = rows[0];
-        const validPassword = bcryptjs.compareSync(password, validUser.password);
+        const user = await Auth.findOne({ where: { email } });
+
+        if (!user) {
+            return res.status(401).json({ message: 'User not found' });
+        }
+
+        const validPassword = bcryptjs.compareSync(password, user.password);
 
         if (!validPassword) {
-            return res.status(401).json({
-                message: "Wrong password"
-            });
+            return res.status(401).json({ message: 'Wrong password' });
         }
 
-        const token = jwt.sign({ id: validUser.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
+        const token = jwt.sign({ id: user.id }, process.env.JWT_SECRET, { expiresIn: '1h' });
 
-        res.cookie('access_token', token).json({
-            message: "Sign in successfully",
-            token,
-            validUser,
-            success: true
-        });
+        res.cookie('access_token', token, { httpOnly: true, secure: process.env.NODE_ENV === 'production' })
+            .json({
+                message: 'Sign in successfully',
+                token,
+                user,
+                success: true
+            });
 
     } catch (error) {
         next(error);
     }
 };
+
+
+
 
 
 

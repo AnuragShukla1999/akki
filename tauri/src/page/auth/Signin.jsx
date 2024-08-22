@@ -64,9 +64,9 @@ const Signin = () => {
             const resData = await response.json();
             console.log(resData)
 
-            if (resData.validUser) {
-                setUser(resData.validUser);
-                localStorage.setItem('user', JSON.stringify(resData.validUser));
+            if (resData.user) {
+                setUser(resData.user);
+                localStorage.setItem('user', JSON.stringify(resData.user));
                 setIsAuthenticated(true);
                 toast.success('Signed in successfully!');
                 console.log('Navigating to /dashboard');
