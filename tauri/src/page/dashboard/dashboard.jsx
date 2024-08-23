@@ -77,17 +77,46 @@ const DashDefault = () => {
     setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
     console.log(e.target.value);
 
+
+
+    // Convert date input from 'DD-MM-YYYY' to 'YYYY-MM-DD' format if necessary
+    if (e.target.name === 'orderDate') {
+      const [day, month, year] = e.target.value.split('-');
+      const formattedDate = `${year}-${month}-${day}`;
+      setProductDetails(prev => ({
+        ...prev,
+        [e.target.name]: formattedDate
+      }));
+    } else {
+      setProductDetails(prev => ({
+        ...prev,
+        [e.target.name]: e.target.value
+      }));
+    }
+
+
+
     // If the pincode changes manually, reset the location state
     if (e.target.name === 'pincode') {
       setLocation([]);
     }
   };
 
-  
+
 
   // Submit button for Form
   const handleSubmit = async (e) => {
     e.preventDefault();
+
+
+    // Check if pincode is valid and non-empty
+    if (productDetails.pincode === '' || isNaN(Number(productDetails.pincode))) {
+      console.error('Invalid or empty pincode');
+      toast.error('Pincode must be a valid number');
+      return;
+    }
+
+
     try {
       const res = await fetch(`${API}/productorderdetails`, {
         method: 'POST',
@@ -375,7 +404,7 @@ const DashDefault = () => {
     }));
   };
 
-  
+
 
   return (
     <div className="container">
@@ -446,7 +475,7 @@ const DashDefault = () => {
               {location.length > 0 && !isLoadingLocation ? (
                 <input type="text" name="city" placeholder="Enter city" onChange={handleLocationSelect} value={aaa.city ? productDetails.city : ''} />
               ) : (
-                <input type="text" name="city" placeholder="Enter city" onChange={handleChange}/>
+                <input type="text" name="city" placeholder="Enter city" onChange={handleChange} />
               )}
             </div>
             <div className="form-group">

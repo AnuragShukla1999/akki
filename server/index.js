@@ -6,7 +6,6 @@ import cookieParser from "cookie-parser";
 import authRouter from './routes/authRoute.js';
 import locationRouter from './routes/locationRoute.js';
 import ProductRouter from './routes/productRoute.js';
-import sequelize from "./config/db.js";
 
 dotenv.config();
 
@@ -74,22 +73,6 @@ app.use('/api', locationRouter);
 
 
 
-const startServer = async () => {
-    try {
-        await sequelize.authenticate();
-        console.log('Database connection has been established successfully.');
-
-        // await sequelize.sync({ alter: true });
-
-        await sequelize.getQueryInterface().showAllTables();
-
-        app.listen(process.env.PORT, () => {
-            console.log(`Server is running at http://localhost:${process.env.PORT}`);
-        });
-    } catch (error) {
-        console.error('Error syncing database or starting server:', error);
-    }
-};
-
-
-startServer();
+app.listen(process.env.PORT, () => {
+    console.log(`Server is running at http://localhost:${process.env.PORT}`);
+});
