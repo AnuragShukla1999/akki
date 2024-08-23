@@ -73,34 +73,81 @@ const DashDefault = () => {
 
 
 
+  // const handleChange = (e) => {
+  //   setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
+  //   console.log(e.target.value);
+
+  //   // Convert date input from 'DD-MM-YYYY' to 'YYYY-MM-DD' format if necessary
+  //   if (e.target.name === 'orderDate') {
+  //     const [day, month, year] = e.target.value.split('-');
+  //     const formattedDate = `${year}-${month}-${day}`;
+  //     setProductDetails(prev => ({
+  //       ...prev,
+  //       [e.target.name]: formattedDate
+  //     }));
+  //   } else {
+  //     setProductDetails(prev => ({
+  //       ...prev,
+  //       [e.target.name]: e.target.value
+  //     }));
+  //   }
+
+  //   // If the pincode changes manually, reset the location state
+  //   if (e.target.name === 'pincode') {
+
+  //     if (e.target.value.length === 6) {
+  //       fetchLocation()
+  //     } else {
+  //       setLocation([]);
+
+  //       setProductDetails(prev => ({
+  //         ...prev,
+  //         state: '',
+  //         city: '',
+  //         completeAddress: ''
+  //       }));
+  //     }
+  //   }
+  // };
+
+
+
+
+
+
   const handleChange = (e) => {
-    setProductDetails({ ...productDetails, [e.target.name]: e.target.value });
-    console.log(e.target.value);
+    const { name, value } = e.target;
 
+    setProductDetails(prev => ({
+      ...prev,
+      [name]: value
+    }));
+    console.log(value);
 
-
-    // Convert date input from 'DD-MM-YYYY' to 'YYYY-MM-DD' format if necessary
-    if (e.target.name === 'orderDate') {
-      const [day, month, year] = e.target.value.split('-');
+    if (name === 'orderDate') {
+      const [day, month, year] = value.split('-');
       const formattedDate = `${year}-${month}-${day}`;
       setProductDetails(prev => ({
         ...prev,
-        [e.target.name]: formattedDate
+        [name]: formattedDate
       }));
-    } else {
-      setProductDetails(prev => ({
-        ...prev,
-        [e.target.name]: e.target.value
-      }));
-    }
-
-
-
-    // If the pincode changes manually, reset the location state
-    if (e.target.name === 'pincode') {
-      setLocation([]);
+    } else if (name === 'pincode') {
+      if (value.length === 6) {
+        fetchLocation(value);
+      } else {
+        setLocation([]);
+        setProductDetails(prev => ({
+          ...prev,
+          state: '',
+          city: '',
+          completeAddress: ''
+        }));
+      }
     }
   };
+
+
+
 
 
 
@@ -108,14 +155,12 @@ const DashDefault = () => {
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-
-    // Check if pincode is valid and non-empty
-    if (productDetails.pincode === '' || isNaN(Number(productDetails.pincode))) {
-      console.error('Invalid or empty pincode');
-      toast.error('Pincode must be a valid number');
-      return;
-    }
-
+    // // Check if pincode is valid and non-empty
+    // if (productDetails.pincode === '') {
+    //   console.error('Invalid or empty pincode');
+    //   toast.error('Pincode must be a valid number');
+    //   return;
+    // }
 
     try {
       const res = await fetch(`${API}/productorderdetails`, {
@@ -278,8 +323,10 @@ const DashDefault = () => {
   const [aaa, setAaa] = useState([]);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  const fetchLocation = async (e) => {
-    const pincode = e.target.value;
+  const fetchLocation = async (pincode) => {
+    // const pincode = e.target.value;
+
+    // const pincode = productDetails.pincode;
     try {
       if (pincode.length === 6) {
         setIsLoadingLocation(true);
@@ -292,14 +339,18 @@ const DashDefault = () => {
 
         const data = await res.json();
 
+        console.log(data)
+
         if (res.ok && data) {
           setLocation(data.addresses);
           setAaa(data);
-          setProductDetails({
-            ...productDetails,
-            state: data.state,
-            city: data.city
-          });
+
+          // Update state and city only if they are not manually entered
+          setProductDetails(prev => ({
+            ...prev,
+            state: prev.state || data.state,
+            city: prev.city || data.city
+          }));
         } else {
           setLocation([]);
           setAaa({});
@@ -319,7 +370,6 @@ const DashDefault = () => {
       setProductDetails({ ...productDetails, state: '', city: '' });
     }
   }
-
 
 
 
@@ -502,6 +552,7 @@ const DashDefault = () => {
             <div className="form-group">
               <label>Payment Mode</label>
               <select name="paymentMode" onChange={handleChange}>
+                <option>select payment</option>
                 <option value="cod">COD</option>
                 <option value="prepaid">Prepaid</option>
               </select>
@@ -525,6 +576,7 @@ const DashDefault = () => {
 
               <label htmlFor="category">Category</label>
               <select name="category" id="" onChange={handleChange}>
+                <option>select category</option>
                 <option value="accessories">Accessories</option>
                 <option value="fashion and clothing">Fashion & Clothing</option>
                 <option value="accessories">Beauty and & Stationary</option>
@@ -569,6 +621,7 @@ const DashDefault = () => {
             <div className="form-group">
               <label>Courier Services</label>
               <select name="courierservices" id="" onChange={handleChange}>
+                <option>select courierservices</option>
                 <option value="xpressbees">Xpressbees</option>
                 <option value="dtdc">DTDC Courier Service.</option>
                 <option value="delhivery">Delhivery</option>
