@@ -9,6 +9,8 @@ const DashDefault = () => {
   const { setProduct } = useContext(AuthContext);
   const formRef = useRef(null);
 
+  const [isPincodeDataFetch, setIsPincodeDataFetch] = useState(false);
+
   const [productDetails, setProductDetails] = useState({
     fullName: '',
     mobileNo: '',
@@ -117,13 +119,14 @@ const DashDefault = () => {
 
   const handleChange = (e) => {
     const { name, value } = e.target;
+    console.log(value)
 
     setProductDetails(prev => ({
       ...prev,
       [name]: value
     }));
-    console.log(value);
 
+    // Special handling for pincode and date
     if (name === 'orderDate') {
       const [day, month, year] = value.split('-');
       const formattedDate = `${year}-${month}-${day}`;
@@ -131,19 +134,23 @@ const DashDefault = () => {
         ...prev,
         [name]: formattedDate
       }));
-    } else if (name === 'pincode') {
-      if (value.length === 6) {
-        fetchLocation(value);
-      } else {
-        setLocation([]);
-        setProductDetails(prev => ({
-          ...prev,
-          state: '',
-          city: '',
-          completeAddress: ''
-        }));
-      }
     }
+
+    // if (name === 'pincode' && value.length === 6) {
+    //   fetchLocation(value);
+    // } else if (name === 'pincode' && value.length < 6) {
+    //   setLocation([]);
+    //   setProductDetails(prev => ({
+    //     ...prev,
+    //     state: '',
+    //     city: ''
+    //   }));
+    // }
+
+
+    // if (name === 'pincode') {
+    //   setLocation([]);
+    // }
   };
 
 
@@ -161,6 +168,13 @@ const DashDefault = () => {
     //   toast.error('Pincode must be a valid number');
     //   return;
     // }
+
+    // Ensure that all required fields have valid data before submission
+    if (!validateForm()) {
+      toast.error('Please fill all required fields');
+      return;
+    }
+
 
     try {
       const res = await fetch(`${API}/productorderdetails`, {
@@ -184,6 +198,18 @@ const DashDefault = () => {
     }
   };
 
+
+
+  const validateForm = () => {
+    const requiredFields = [
+      'fullName', 'mobileNo', 'email', 'completeAddress', 'pincode',
+      'state', 'city', 'orderId', 'orderDate', 'paymentMode',
+      'productName', 'quantity', 'orderValue', 'hsn', 'physicalWeight',
+      'length', 'breadth', 'height', 'courierservices', 'amount'
+    ];
+
+    return requiredFields.every(field => productDetails[field] && productDetails[field].trim() !== '');
+  };
 
 
   // PDF Generate Form
@@ -323,8 +349,8 @@ const DashDefault = () => {
   const [aaa, setAaa] = useState([]);
   const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  const fetchLocation = async (pincode) => {
-    // const pincode = e.target.value;
+  const fetchLocation = async (e) => {
+    const pincode = e.target.value;
 
     // const pincode = productDetails.pincode;
     try {
@@ -334,16 +360,23 @@ const DashDefault = () => {
         const res = await fetch(url);
 
         if (!res.ok) {
-          throw new Error('Failed to fetch data');
+          setProductDetails(prev => ({
+            ...prev,
+            state: prev.state,
+            city: prev.city,
+            pincode: prev.pincode
+          }));
+          return
         }
-
         const data = await res.json();
-
         console.log(data)
 
         if (res.ok && data) {
           setLocation(data.addresses);
           setAaa(data);
+
+
+          setIsPincodeDataFetch(true)
 
           // Update state and city only if they are not manually entered
           setProductDetails(prev => ({
@@ -446,6 +479,8 @@ const DashDefault = () => {
 
   const handleLocationSelect = (e) => {
     const completeAddress = e.target.value;
+
+    console.log(e.target.value)
     setProductDetails(prev => ({
       ...prev,
       completeAddress: completeAddress,
@@ -509,6 +544,11 @@ const DashDefault = () => {
             </div>
             <div className="form-group">
               <label>Pincode</label>
+              {/* {
+                location.length > 0 ? (
+                  <input type="number" name="pincode" placeholder="Enter pincode" onChange={handleChange} onInput={fetchLocation} />
+                ) : <input type="number" name="pincode" placeholder="Enter pincode" onChange={handleChange} />
+              } */}
               <input type="number" name="pincode" placeholder="Enter pincode" onChange={handleChange} onInput={fetchLocation} />
             </div>
             <div className="form-group">
