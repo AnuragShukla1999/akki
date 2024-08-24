@@ -102,7 +102,7 @@ export const createLocation = async (req, res) => {
 
         // Insert into addresses table
         for (const address of addresses) {
-            await connection.query(
+            await connection.query( 
                 'INSERT INTO addresses ( location_id, location_name) VALUES (?, ?)',
                 [locationResult.insertId, address.location_name]
             );
@@ -119,9 +119,8 @@ export const createLocation = async (req, res) => {
     } finally {
         if (connection) {
             try {
-                await connection.end(); // Ensure the connection is closed properly
+                await connection.end(); 
             } catch (err) {
-                // Handle any error during connection closing if necessary
                 console.error('Error closing the connection:', err.message);
             }
         }
