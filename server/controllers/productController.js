@@ -442,3 +442,44 @@ export const deleteProductDetailsById = async (req, res) => {
         });
     }
 };
+
+
+
+
+
+
+// export const deleteProductDetailsById = async (req, res) => {
+//     // Extract the array of product IDs from the request body
+//     const productId = req.params.id;
+
+//     if (!Array.isArray(productId) || productId.length === 0) {
+//         return res.status(400).json({
+//             message: 'No product IDs provided for deletion'
+//         });
+//     }
+
+//     try {
+//         // Prepare SQL query to delete products with the given IDs
+//         const [result] = await dbConnection.promise().query(
+//             'DELETE FROM products WHERE id IN (?)',
+//             [productId]
+//         );
+
+//         // Check if any rows were affected
+//         if (result.affectedRows === 0) {
+//             return res.status(404).json({
+//                 message: "No products found with the provided IDs"
+//             });
+//         }
+
+//         res.status(200).json({
+//             message: "Products deleted successfully",
+//             deletedProductIds: productId
+//         });
+//     } catch (error) {
+//         console.error(error);
+//         res.status(500).json({
+//             message: 'Failed to delete products'
+//         });
+//     }
+// };

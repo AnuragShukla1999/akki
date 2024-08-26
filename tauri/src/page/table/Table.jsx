@@ -54,6 +54,8 @@ const BootstrapTable = () => {
 
 
 
+
+
   let emptyProduct = {
     orderId: null,
     productName: '',
@@ -102,6 +104,14 @@ const BootstrapTable = () => {
     setDeleteProductsDialog(false);
   };
 
+
+
+
+  ///  select console
+  const handleSelectionChange = (e) => {
+    setSelectedProducts(e.value);
+    console.log('Selected Products:', e.value); // Log the selected products
+  };
 
 
 
@@ -481,13 +491,13 @@ const BootstrapTable = () => {
     <div>
       <Toast ref={toast} />
       <div className="card">
-        <Toolbar className="mb-4" left={leftToolbarTemplate} right={rightToolbarTemplate}></Toolbar>
+        <Toolbar className="mb-4" left={leftToolbarTemplate}></Toolbar>
 
         <DataTable
           ref={dt}
           value={productDetails}
           selection={selectedProducts}
-          onSelectionChange={(e) => setSelectedProducts(e.value)}
+          onSelectionChange={handleSelectionChange}
           dataKey="id"
           paginator
           rows={10}
