@@ -143,7 +143,6 @@ const BootstrapTable = () => {
 
 
 
-
  ///  delete functional area
   const confirmDeleteProduct = (product) => {
     setProduct(product);
@@ -151,7 +150,7 @@ const BootstrapTable = () => {
   };
 
 
-
+  // Delete Individual product
   const deleteProduct = async () => {
     try {
       const res = await fetch(`${API}/deleteproductdetails/${product.id}`, {
