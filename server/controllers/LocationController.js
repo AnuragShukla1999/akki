@@ -5,42 +5,24 @@ export const getLocation = async (req, res) => {
     console.log("Received pincode:", pincode);
 
     try {
-        // Get location details
         const [locationRows] = await dbConnection.promise().query(
             'SELECT * FROM locations WHERE pincode = ?',
             [pincode]
         );
-        // export const getLocation = async (req, res) => {
-        //     const pincode = req.params.pincode;
-        //     console.log("Received pincode:", pincode);
 
         if (locationRows.length === 0) {
             return res.status(404).json({
                 message: "Pincode not found"
             });
         }
-        //     try {
-        //         // Get location details
-        //         const [locationRows] = await dbConnection.promise().query(
-        //             'SELECT * FROM locations WHERE pincode = ?',
-        //             [pincode]
-        //         );
 
         const location = locationRows[0];
-        //         if (locationRows.length === 0) {
-        //             return res.status(404).json({
-        //                 message: "Pincode not found"
-        //             });
-        //         }
 
-        // Get associated addresses
         const [addressRows] = await dbConnection.promise().query(
             'SELECT * FROM addresses WHERE location_id = ?',
             [location.id]
         );
-        //         const location = locationRows[0];
 
-        // Format the response
         res.status(200).json({
             _id: location.id,
             pincode: location.pincode,
@@ -94,13 +76,11 @@ export const createLocation = async (req, res) => {
     try {
         const { pincode, addresses, city, state } = req.body;
 
-        // Insert into locations table
         const [locationResult] = await connection.query(
             'INSERT INTO locations (pincode, city, state) VALUES (?, ?, ?)',
             [pincode, city, state]
         );
 
-        // Insert into addresses table
         for (const address of addresses) {
             await connection.query( 
                 'INSERT INTO addresses ( location_id, location_name) VALUES (?, ?)',

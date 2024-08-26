@@ -10,7 +10,7 @@ export const signup = async (req, res, next) => {
         const [rows] = await dbConnection.promise().query('SELECT * FROM users WHERE email = ?', [email]);
 
         if (rows.length > 0) {
-            throw new Error("User already exists");
+            return res.status(400).json({ message: 'User already exists' });
         }
 
         if (!email || !password) {

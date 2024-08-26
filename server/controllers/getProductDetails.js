@@ -2,7 +2,6 @@ import dbConnection from "../config/db.js";
 
 export const getProductDetails = async (req, res) => {
     try {
-        // Fetch product details directly from the connection
         const [rows] = await dbConnection.promise().query(
             `SELECT * FROM products ORDER BY createdAt DESC`
         );

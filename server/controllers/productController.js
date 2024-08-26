@@ -243,12 +243,10 @@ export const updateProductDetails = async (req, res) => {
             }
         }
 
-        // Build dynamic query
         let query = `UPDATE products SET `;
         const values = [];
 
-        // Add fields to update only if they are provided
-        if (fullName !== undefined) {
+        if (fullName !== undefined) {  
             query += `fullName = ?, `;
             values.push(fullName);
         }
@@ -340,11 +338,9 @@ export const updateProductDetails = async (req, res) => {
         // Remove the trailing comma and space
         query = query.slice(0, -2);
 
-        // Add the WHERE clause
         query += ` WHERE id = ?`;
         values.push(productId);
 
-        // Execute the query
         const [result] = await dbConnection.promise().query(query, values);
 
         if (result.affectedRows === 0) {
