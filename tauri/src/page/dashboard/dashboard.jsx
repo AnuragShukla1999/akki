@@ -9,7 +9,6 @@ const DashDefault = () => {
   const { setProduct } = useContext(AuthContext);
   const formRef = useRef(null);
 
-  const [isPincodeDataFetch, setIsPincodeDataFetch] = useState(false);
 
   const [productDetails, setProductDetails] = useState({
     fullName: '',
@@ -126,7 +125,7 @@ const DashDefault = () => {
       [name]: value
     }));
 
-    // Special handling for pincode and date
+    // Special handling for date
     if (name === 'orderDate') {
       const [day, month, year] = value.split('-');
       const formattedDate = `${year}-${month}-${day}`;
@@ -136,45 +135,29 @@ const DashDefault = () => {
       }));
     }
 
-    // if (name === 'pincode' && value.length === 6) {
-    //   fetchLocation(value);
-    // } else if (name === 'pincode' && value.length < 6) {
-    //   setLocation([]);
-    //   setProductDetails(prev => ({
-    //     ...prev,
-    //     state: '',
-    //     city: ''
-    //   }));
-    // }
+    if (name === 'pincode' && value.length === 6) {
+      fetchLocation(value);
+    } else if (name === 'pincode' && value.length < 6) {
+      setLocation([]);
+      setProductDetails(prev => ({
+        ...prev,
+        state: '',
+        city: ''
+      }));
+    }
 
-
-    // if (name === 'pincode') {
-    //   setLocation([]);
-    // }
   };
-
-
-
-
 
 
   // Submit button for Form
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // // Check if pincode is valid and non-empty
-    // if (productDetails.pincode === '') {
-    //   console.error('Invalid or empty pincode');
-    //   toast.error('Pincode must be a valid number');
-    //   return;
-    // }
-
     // Ensure that all required fields have valid data before submission
     if (!validateForm()) {
       toast.error('Please fill all required fields');
       return;
     }
-
 
     try {
       const res = await fetch(`${API}/productorderdetails`, {
@@ -344,79 +327,76 @@ const DashDefault = () => {
 
 
 
-  // // Fetch Location according to Pincode
-  // const [location, setLocation] = useState([]);
-  // const [aaa, setAaa] = useState([]);
-  // const [isLoadingLocation, setIsLoadingLocation] = useState(false);
+  // Fetch Location according to Pincode
+  const [location, setLocation] = useState([]);
+  const [aaa, setAaa] = useState([]);
+  const [isLoadingLocation, setIsLoadingLocation] = useState(false);
 
-  // const fetchLocation = async (e) => {
-  //   const pincode = e.target.value;
+  const fetchLocation = async (pincode) => {
+    // const pincode = e.target.value;
 
-  //   // const pincode = productDetails.pincode;
-  //   try {
-  //     if (pincode.length === 6) {
-  //       setIsLoadingLocation(true);
-  //       const url = `${API}/getlocation/${pincode}`;
-  //       const res = await fetch(url);
+    // const pincode = productDetails.pincode;
+    try {
+      if (pincode.length === 6) {
+        setIsLoadingLocation(true);
+        const url = `${API}/getlocation/${pincode}`;
+        const res = await fetch(url);
 
-  //       if (!res.ok) {
-  //         setProductDetails(prev => ({
-  //           ...prev,
-  //           state: prev.state,
-  //           city: prev.city,
-  //           pincode: prev.pincode
-  //         }));
-  //         return
-  //       }
-  //       const data = await res.json();
-  //       console.log(data);
+        if (!res.ok) {
+          setProductDetails(prev => ({
+            ...prev,
+            state: prev.state,
+            city: prev.city,
+            pincode: prev.pincode
+          }));
+          return
+        }
+        const data = await res.json();
+        console.log(data);
 
-  //       if (res.ok && data) {
-  //         setLocation(data.addresses);
-  //         setAaa(data);
+        if (res.ok && data) {
+          setLocation(data.addresses);
+          setAaa(data);
 
-
-  //         setIsPincodeDataFetch(true)
-
-  //         // Update state and city only if they are not manually entered
-  //         setProductDetails(prev => ({
-  //           ...prev,
-  //           state: prev.state || data.state,
-  //           city: prev.city || data.city
-  //         }));
-  //       } else {
-  //         setLocation([]);
-  //         setAaa({});
-  //         setProductDetails({ ...productDetails, state: '', city: '' });
-  //       }
-  //       setIsLoadingLocation(false);
-  //     } else {
-  //       setProductDetails({
-  //         ...productDetails,
-  //         state: '',
-  //         city: ''
-  //       });
-  //     }
-  //   } catch (error) {
-  //     console.log("Error", error);
-  //     setIsLoadingLocation(false);
-  //     setProductDetails({ ...productDetails, state: '', city: '' });
-  //   }
-  // }
+          // Update state and city only if they are not manually entered
+          setProductDetails(prev => ({
+            ...prev,
+            state: prev.state || data.state,
+            city: prev.city || data.city
+          }));
+        } else {
+          setLocation([]);
+          setAaa({});
+          setProductDetails({ ...productDetails, state: '', city: '' });
+        }
+        setIsLoadingLocation(false);
+      } else {
+        setProductDetails({
+          ...productDetails,
+          state: '',
+          city: ''
+        });
+      }
+    } catch (error) {
+      console.log("Error", error);
+      setIsLoadingLocation(false);
+      setProductDetails({ ...productDetails, state: '', city: '' });
+    }
+  }
 
 
 
-  // const handleLocationSelect = (e) => {
-  //   const completeAddress = e.target.value;
+  const handleLocationSelect = (e) => {
+    const completeAddress = e.target.value;
 
-  //   console.log(e.target.value)
-  //   setProductDetails(prev => ({
-  //     ...prev,
-  //     completeAddress: completeAddress,
-  //     state: aaa.state || productDetails.state,
-  //     city: aaa.city || productDetails.city
-  //   }));
-  // };
+    console.log(e.target.value)
+    setProductDetails(prev => ({
+      ...prev,
+      completeAddress: completeAddress,
+      state: aaa.state || productDetails.state,
+      city: aaa.city || productDetails.city
+    }));
+  };
 
 
 
@@ -457,7 +437,7 @@ const DashDefault = () => {
             <div className="form-group">
               <label>Complete Address</label>
 
-              {/* {location.length > 0 && !isLoadingLocation ? (
+              {location.length > 0 && !isLoadingLocation ? (
                 <select as="select" name="completeAddress" onChange={handleLocationSelect}>
                   <option>Select Address...</option>
                   {location.map((loc, index) => (
@@ -468,9 +448,9 @@ const DashDefault = () => {
                 </select>
               ) : (
                 <input type="text" name='completeAddress' placeholder="Enter Address" onChange={handleChange} />
-              )} */}
+              )}
 
-              <input type="text" name='completeAddress' placeholder="Enter Address" onChange={handleChange} />
+              {/* <input type="text" name='completeAddress' placeholder="Enter Address" onChange={handleChange} /> */}
 
             </div>
             <div className="form-group">
@@ -485,25 +465,25 @@ const DashDefault = () => {
             <div className="form-group">
               <label>State</label>
 
-              {/* {location.length > 0 && !isLoadingLocation ? (
+              {location.length > 0 && !isLoadingLocation ? (
                 <input type="text" name="state" placeholder="Enter state" onChange={handleLocationSelect} value={aaa.state ? productDetails.state : ''} />
               ) : (
                 <input type="text" name="state" placeholder="Enter state" onChange={handleChange} />
-              )} */}
+              )}
 
 
-              <input type="text" name="state" placeholder="Enter state" onChange={handleChange} />
+              {/* <input type="text" name="state" placeholder="Enter state" onChange={handleChange} /> */}
             </div>
             <div className="form-group">
               <label>City</label>
-              {/* {location.length > 0 && !isLoadingLocation ? (
+              {location.length > 0 && !isLoadingLocation ? (
                 <input type="text" name="city" placeholder="Enter city" onChange={handleLocationSelect} value={aaa.city ? productDetails.city : ''} />
               ) : (
                 <input type="text" name="city" placeholder="Enter city" onChange={handleChange} />
-              )} */}
+              )}
 
 
-              <input type="text" name="city" placeholder="Enter city" onChange={handleChange} />
+              {/* <input type="text" name="city" placeholder="Enter city" onChange={handleChange} /> */}
             </div>
             <div className="form-group">
               <label>Landmark</label>

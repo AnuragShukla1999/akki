@@ -328,7 +328,7 @@ const BootstrapTable = () => {
           headers: {
             'Content-Type': 'application/json',
           },
-          body: JSON.stringify({ ids: selectedIds }),
+          body: JSON.stringify({ productIds: selectedIds }),
           credentials: 'include',
         });
   
