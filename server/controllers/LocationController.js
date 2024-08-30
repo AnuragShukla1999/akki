@@ -39,35 +39,8 @@ export const getLocation = async (req, res) => {
         res.status(500).json({
             message: error.message
         });
-    }
+    } 
 };
-
-
-
-
-
-
-// export const createLocation = async (req, res) => {
-//     try {
-//         const { pincode, addresses, city, state } = req.body;
-//         const [result] = await dbConnection.promise().query(
-//             'INSERT INTO locations (pincode, addresses, city, state) VALUES (?, ?, ?, ?)',
-//             [pincode, addresses, city, state]
-//         );
-//         res.status(201).json({
-//             message: "location created successfully",
-//             location: { pincode, addresses, city, state, id: result.insertId }
-//         });
-//     } catch (error) {
-//         res.status(500).json({
-//             message: error.message
-//         });
-//     }
-// };
-
-
-
-
 
 
 
@@ -82,7 +55,7 @@ export const createLocation = async (req, res) => {
         );
 
         for (const address of addresses) {
-            await connection.query( 
+            await connection.query(
                 'INSERT INTO addresses ( location_id, location_name) VALUES (?, ?)',
                 [locationResult.insertId, address.location_name]
             );
@@ -96,13 +69,5 @@ export const createLocation = async (req, res) => {
         res.status(500).json({
             message: error.message
         });
-    } finally {
-        if (connection) {
-            try {
-                await connection.end(); 
-            } catch (err) {
-                console.error('Error closing the connection:', err.message);
-            }
-        }
-    }
+    } 
 };

@@ -1,64 +1,5 @@
 import dbConnection from "../config/db.js";
 
-// export const uploadProductDetails = async (req, res) => {
-//     try {
-//         const {
-//             fullName,
-//             mobileNo,
-//             email,
-//             completeAddress,
-//             pincode,
-//             state,
-//             city,
-//             landmark,
-//             orderId,
-//             orderDate,
-//             paymentMode,
-//             productName,
-//             category, 
-//             quantity,
-//             orderValue,
-//             hsn,
-//             physicalWeight,
-//             length,
-//             breadth,
-//             height,
-//             courierservices,
-//             amount
-//         } = req.body;
-
-
-//         if (!pincode || isNaN(Number(pincode))) {
-//             return res.status(400).json({ message: 'Invalid pincode' });
-//         }
-
-
-//         const [result] = await dbConnection.promise().query(
-//             `INSERT INTO products (
-//                 fullName, mobileNo, email, completeAddress, pincode, state, city, landmark, 
-//                 orderId, orderDate, paymentMode, productName, category, quantity, orderValue, 
-//                 hsn, physicalWeight, length, breadth, height, courierservices, amount
-//             ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
-//             [
-//                 fullName, mobileNo, email, completeAddress, pincode, state, city, landmark,
-//                 orderId, orderDate, paymentMode, productName, category, quantity, orderValue,
-//                 hsn, physicalWeight, length, breadth, height, courierservices, amount
-//             ]
-//         );
-
-//         res.status(201).json({
-//             message: "Successfully Added Details",
-//             data: result
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to create product' });
-//     }
-// };
-
-
-
-
 export const uploadProductDetails = async (req, res) => {
     try {
         const {
@@ -116,89 +57,6 @@ export const uploadProductDetails = async (req, res) => {
         res.status(500).json({ message: 'Failed to create product' });
     }
 };
-
-
-
-
-// export const updateProductDetails = async (req, res) => {
-//     const productId = req.params.id;
-//     console.log('Product ID:', productId);
-
-//     try {
-//         const {
-//             fullName,
-//             mobileNo,
-//             email,
-//             completeAddress,
-//             pincode,
-//             state,
-//             city,
-//             landmark,
-//             orderId,
-//             orderDate,
-//             paymentMode,
-//             productName,
-//             category,
-//             quantity,
-//             orderValue,
-//             hsn,
-//             physicalWeight,
-//             length,
-//             breadth,
-//             height,
-//             courierservices,
-//             amount
-//         } = req.body;
-
-//         // // Convert ISO 8601 date string to MySQL DATE format (YYYY-MM-DD)
-//         // const formattedOrderDate = new Date(orderDate).toISOString().split('T')[0];
-
-
-
-//         // Validate and format the orderDate
-//         let formattedOrderDate = null;
-//         if (orderDate) {
-//             const parsedDate = new Date(orderDate);
-//             if (!isNaN(parsedDate.getTime())) {
-//                 formattedOrderDate = parsedDate.toISOString().split('T')[0];
-//             } else {
-//                 throw new Error('Invalid orderDate format');
-//             }
-//         }
-
-        
-//         const [result] = await dbConnection.promise().query(
-//             `UPDATE products SET 
-//                 fullName = ?, mobileNo = ?, email = ?, completeAddress = ?, pincode = ?, state = ?, city = ?, landmark = ?, 
-//                 orderId = ?, orderDate = ?, paymentMode = ?, productName = ?, category = ?, quantity = ?, orderValue = ?, 
-//                 hsn = ?, physicalWeight = ?, length = ?, breadth = ?, height = ?, courierservices = ?, amount = ?
-//             WHERE id = ?`,
-//             [
-//                 fullName, mobileNo, email, completeAddress, pincode, state, city, landmark,
-//                 orderId, formattedOrderDate, paymentMode, productName, category, quantity, orderValue,
-//                 hsn, physicalWeight, length, breadth, height, courierservices, amount,
-//                 productId
-//             ]
-//         );
-
-//         if (result.affectedRows === 0) {
-//             return res.status(404).json({ message: "Product not found" });
-//         }
-
-//         res.status(200).json({
-//             message: "Product details updated successfully",
-//             updatedProduct: { id: productId, ...req.body }
-//         });
-
-
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({ message: 'Failed to update product details' });
-//     }
-// };
-
-
-
 
 
 
@@ -415,7 +273,6 @@ export const deleteProducts = async (req, res) => {
 
 
 
-
 export const deleteProductDetailsById = async (req, res) => {
     const productId = req.params.id;
 
@@ -442,44 +299,3 @@ export const deleteProductDetailsById = async (req, res) => {
         });
     }
 };
-
-
-
-
-
-
-// export const deleteProductDetailsById = async (req, res) => {
-//     // Extract the array of product IDs from the request body
-//     const productId = req.params.id;
-
-//     if (!Array.isArray(productId) || productId.length === 0) {
-//         return res.status(400).json({
-//             message: 'No product IDs provided for deletion'
-//         });
-//     }
-
-//     try {
-//         // Prepare SQL query to delete products with the given IDs
-//         const [result] = await dbConnection.promise().query(
-//             'DELETE FROM products WHERE id IN (?)',
-//             [productId]
-//         );
-
-//         // Check if any rows were affected
-//         if (result.affectedRows === 0) {
-//             return res.status(404).json({
-//                 message: "No products found with the provided IDs"
-//             });
-//         }
-
-//         res.status(200).json({
-//             message: "Products deleted successfully",
-//             deletedProductIds: productId
-//         });
-//     } catch (error) {
-//         console.error(error);
-//         res.status(500).json({
-//             message: 'Failed to delete products'
-//         });
-//     }
-// };

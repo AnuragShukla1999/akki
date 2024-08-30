@@ -11,44 +11,12 @@ dotenv.config();
 
 const app = express();
 
-
-
-import { internalIpV6, internalIpV4 } from 'internal-ip';
-
-console.log(await internalIpV6());
-
-console.log(await internalIpV4());
-
-
-
-// const allowedOrigins = ['http://192.168.29.93:3000', 'http://localhost:3000']; 
-
-// const corsOptions = {
-//     origin: (origin, callback) => {
-//         if (allowedOrigins.indexOf(origin) !== -1 || !origin) {
-//             callback(null, true);
-//         } else {
-//             callback(new Error('Not allowed by CORS'));
-//         }
-//     },
-//     methods: 'GET,POST,PUT,DELETE',
-//     allowedHeaders: 'Content-Type,Authorization',
-//     credentials: true
-// };
-
 app.use(cors({
     origin: 'http://localhost:3000',
     methods: ['GET', 'POST', 'PUT', 'DELETE'],
     allowedHeaders: ['Content-Type', 'Authorization'],
     credentials: true
 }));
-
-
-// app.use(cors({
-//     origin: '*'
-// }));
-
-// app.use(cors(corsOptions));
 
 app.use((req, res, next) => {
     res.header('Access-Control-Allow-Credentials', 'true');
