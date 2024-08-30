@@ -22,7 +22,7 @@ export const signup = async (req, res, next) => {
         await dbConnection.promise().query('INSERT INTO users (name, email, password) VALUES (?, ?, ?)', [name, email, hashedPassword]);
 
         res.status(201).json({
-            id: result.insertId,
+            id: rows.insertId,
             message: "User created successfully"
         });
     } catch (error) {

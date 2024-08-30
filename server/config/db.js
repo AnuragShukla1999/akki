@@ -11,10 +11,10 @@ import mysql from "mysql2";
 
 dbConnection.connect((err) => {
     if (err) {
-      console.error('error connecting to the database:', err.stack);
+      console.error('Error connecting to the Database:', err.stack);
       return;
     }
-    console.log('connected to the database as id ' + dbConnection.threadId);
+    console.log('Connected to the Database');
   });
 
 export default dbConnection;
