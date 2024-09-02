@@ -267,3 +267,188 @@
 // };
 
 // console.log(star)
+
+
+
+
+// const arr = [1, 2, 3, 4, 5]
+// const newArr = [];
+
+// for (let i = 0; i < arr.length; i++) {
+//     let b = arr[i] + 2;
+//     newArr.push(b)
+// };
+
+
+// console.log(newArr)
+
+
+
+
+// const arr = [1, 2, 3, 4, 5]
+
+
+// for (let i = 0; i < arr.length; i++) {
+    
+// };
+
+
+// for ( let val of arr) {
+//     val += 2
+// }
+
+
+// for (let i=0; i<arr.length; i++) {
+//     let a =
+// }
+
+
+
+// let arry = [1, 2, 3, 4, 5];
+// for (let i = 0; i < arry.length; i++) {
+//   arry[i] += 2;
+// }
+// console.log(arry);
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+/////    ------------------------------ Object -----------------------------------------////
+
+
+// let emp = {
+//     name: "Kareem",
+//     age: 26,
+//     designation: "Software Engineer",
+// } 
+
+// emp.color = "red";
+// console.log(emp); // Output: "red"
+
+
+// delete emp.name;
+
+// console.log(emp)
+
+
+
+
+
+// let emp = {
+//     name: "Kareem",
+//     age: 26,
+//     designation: "Software Engineer",
+// } 
+
+
+
+// for (let x in emp) {
+//     console.log(`${x}   ${emp[x]}`)
+// }
+
+
+
+
+
+// const car = {
+//     brand: "Toyota",
+//     model: "Corolla",
+//     year: 2020
+// };
+
+
+
+// function hasProperty(obj, prop) {
+//     return obj.hasOwnProperty(prop);
+// }
+// console.log(hasProperty(car, 'brand')); // Output: true
+// console.log(hasProperty(car, 'model')); // Output: false
+
+
+
+
+// const car = {
+//     brand: "Toyota",
+//     model: "Corolla",
+//     year: 2020
+// };
+
+// const owner = {
+//     name: "John",
+//     age: 35
+// };
+
+// const carWithOwner = Object.assign({}, car, owner);
+// console.log(carWithOwner);
+// // Output: { brand: 'Toyota', year: 2022, color: 'red', startEngine: [Function], name: 'John', age: 35 }
+
+
+
+
+
+// const keyValuePairs = [['brand', 'Toyota'], ['year', 2022], ['color', 'red']];
+// const carFromArray = Object.fromEntries(keyValuePairs);
+// console.log(carFromArray);
+
+
+
+
+
+
+
+
+
+
+
+
+//  ------------------------------------------  Object related Question
+
+// Create an object person with properties name, age, and greet(). Write a method greet() that logs "Hello, my name is [name] and I am [age] years old."
+
+// const person = {
+//     name: "anurag",
+//     age: 25,
+
+//     greet: function greet() {
+//         console.log(this.name + " " + this.age)
+//     }
+// };
+
+// console.log(person.greet());
+
+
+
+
+
+//  Write a function mergeObjects(obj1, obj2) that merges two objects and returns the result. If both objects have the same property, obj2 should overwrite obj1.
+
+const obj1 = {
+    a: "aaa",
+    b: "bbb"
+};
+
+const obj2 = {
+    c: "ccc",
+    d: "ddd"
+};
+
+
+let newObj = Object.assign(obj1, obj2);
+
+console.log(newObj)
