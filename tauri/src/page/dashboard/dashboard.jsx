@@ -466,7 +466,7 @@ const DashDefault = () => {
               <label>State</label>
 
               {location.length > 0 && !isLoadingLocation ? (
-                <input type="text" name="state" placeholder="Enter state" onChange={handleLocationSelect} value={aaa.state ? productDetails.state : ''} />
+                <input type="text" name="state" placeholder="Enter state" onChange={handleChange} value={aaa.state ? productDetails.state : ''} />
               ) : (
                 <input type="text" name="state" placeholder="Enter state" onChange={handleChange} />
               )}
@@ -477,7 +477,7 @@ const DashDefault = () => {
             <div className="form-group">
               <label>City</label>
               {location.length > 0 && !isLoadingLocation ? (
-                <input type="text" name="city" placeholder="Enter city" onChange={handleLocationSelect} value={aaa.city ? productDetails.city : ''} />
+                <input type="text" name="city" placeholder="Enter city" onChange={handleChange} value={aaa.city ? productDetails.city : ''} />
               ) : (
                 <input type="text" name="city" placeholder="Enter city" onChange={handleChange} />
               )}
